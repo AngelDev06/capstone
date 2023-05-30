@@ -28,91 +28,91 @@
   "ARM": {
     "files_to_translate": [
       {
-        "in": "{AUTO_SYNC_ROOT}/vendor/llvm_root/llvm/lib/Target/ARM/Disassembler/ARMDisassembler.cpp",
+        "in": "{AUTO_SYNC_ROOT}/vendor/llvm_root/lib/Target/ARM/Disassembler/ARMDisassembler.cpp",
         "out": "ARMDisassembler.c"
       },{
-        "in": "{AUTO_SYNC_ROOT}/vendor/llvm_root/llvm/lib/Target/ARM/MCTargetDesc/ARMInstPrinter.cpp",
+        "in": "{AUTO_SYNC_ROOT}/vendor/llvm_root/lib/Target/ARM/MCTargetDesc/ARMInstPrinter.cpp",
         "out": "ARMInstPrinter.c"
       },{
-        "in": "{AUTO_SYNC_ROOT}/vendor/llvm_root/llvm/lib/Target/ARM/MCTargetDesc/ARMInstPrinter.h",
+        "in": "{AUTO_SYNC_ROOT}/vendor/llvm_root/lib/Target/ARM/MCTargetDesc/ARMInstPrinter.h",
         "out": "ARMInstPrinter.h"
       },{
-        "in": "{AUTO_SYNC_ROOT}/vendor/llvm_root/llvm/lib/Target/ARM/MCTargetDesc/ARMAddressingModes.h",
+        "in": "{AUTO_SYNC_ROOT}/vendor/llvm_root/lib/Target/ARM/MCTargetDesc/ARMAddressingModes.h",
         "out": "ARMAddressingModes.h"
       },{
-        "in": "{AUTO_SYNC_ROOT}/vendor/llvm_root/llvm/lib/Target/ARM/Utils/ARMBaseInfo.cpp",
+        "in": "{AUTO_SYNC_ROOT}/vendor/llvm_root/lib/Target/ARM/Utils/ARMBaseInfo.cpp",
         "out": "ARMBaseInfo.c"
       }
     ],
     "files_for_template_search": [
       "{AUTO_SYNC_ROOT}/build/llvm_inc/ARMGenDisassemblerTables.inc",
       "{AUTO_SYNC_ROOT}/build/llvm_inc/ARMGenAsmWriter.inc",
-      "{AUTO_SYNC_ROOT}/vendor/llvm_root/llvm/lib/Target/ARM/Disassembler/ARMDisassembler.cpp",
-      "{AUTO_SYNC_ROOT}/vendor/llvm_root/llvm/lib/Target/ARM/MCTargetDesc/ARMInstPrinter.cpp"
+      "{AUTO_SYNC_ROOT}/vendor/llvm_root/lib/Target/ARM/Disassembler/ARMDisassembler.cpp",
+      "{AUTO_SYNC_ROOT}/vendor/llvm_root/lib/Target/ARM/MCTargetDesc/ARMInstPrinter.cpp"
     ],
     "templates_with_arg_deduction": [],
     "manually_edited_files": [
-      "{AUTO_SYNC_ROOT}/vendor/llvm_root/llvm/lib/Target/ARM/Utils/ARMBaseInfo.h"
+      "{AUTO_SYNC_ROOT}/vendor/llvm_root/lib/Target/ARM/Utils/ARMBaseInfo.h"
     ]
   },
    "PPC": {
     "files_to_translate": [
       {
-        "in": "{AUTO_SYNC_ROOT}/vendor/llvm_root/llvm/lib/Target/PowerPC/Disassembler/PPCDisassembler.cpp",
+        "in": "{AUTO_SYNC_ROOT}/vendor/llvm_root/lib/Target/PowerPC/Disassembler/PPCDisassembler.cpp",
         "out": "PPCDisassembler.c"
       },{
-        "in": "{AUTO_SYNC_ROOT}/vendor/llvm_root/llvm/lib/Target/PowerPC/MCTargetDesc/PPCInstPrinter.cpp",
+        "in": "{AUTO_SYNC_ROOT}/vendor/llvm_root/lib/Target/PowerPC/MCTargetDesc/PPCInstPrinter.cpp",
         "out": "PPCInstPrinter.c"
       },{
-        "in": "{AUTO_SYNC_ROOT}/vendor/llvm_root/llvm/lib/Target/PowerPC/MCTargetDesc/PPCInstPrinter.h",
+        "in": "{AUTO_SYNC_ROOT}/vendor/llvm_root/lib/Target/PowerPC/MCTargetDesc/PPCInstPrinter.h",
         "out": "PPCInstPrinter.h"
       },{
-        "in": "{AUTO_SYNC_ROOT}/vendor/llvm_root/llvm/lib/Target/PowerPC/MCTargetDesc/PPCMCTargetDesc.h",
+        "in": "{AUTO_SYNC_ROOT}/vendor/llvm_root/lib/Target/PowerPC/MCTargetDesc/PPCMCTargetDesc.h",
         "out": "PPCMCTargetDesc.h"
       },{
-        "in": "{AUTO_SYNC_ROOT}/vendor/llvm_root/llvm/lib/Target/PowerPC/MCTargetDesc/PPCPredicates.h",
+        "in": "{AUTO_SYNC_ROOT}/vendor/llvm_root/lib/Target/PowerPC/MCTargetDesc/PPCPredicates.h",
         "out": "PPCPredicates.h"
       }
     ],
     "files_for_template_search": [
       "{AUTO_SYNC_ROOT}/build/llvm_inc/PPCGenDisassemblerTables.inc",
-      "{AUTO_SYNC_ROOT}/vendor/llvm_root/llvm/lib/Target/PowerPC/Disassembler/PPCDisassembler.cpp"
+      "{AUTO_SYNC_ROOT}/vendor/llvm_root/lib/Target/PowerPC/Disassembler/PPCDisassembler.cpp"
     ],
      "templates_with_arg_deduction": [
        "decodeRegisterClass"
      ],
     "manually_edited_files": [
-      "{AUTO_SYNC_ROOT}/vendor/llvm_root/llvm/lib/Target/PowerPC/PPCInstrInfo.h",
-      "{AUTO_SYNC_ROOT}/vendor/llvm_root/llvm/lib/Target/PowerPC/PPCRegisterInfo.h"
+      "{AUTO_SYNC_ROOT}/vendor/llvm_root/lib/Target/PowerPC/PPCInstrInfo.h",
+      "{AUTO_SYNC_ROOT}/vendor/llvm_root/lib/Target/PowerPC/PPCRegisterInfo.h"
     ]
   },
   "AArch64": {
     "files_to_translate": [
       {
-        "in": "{AUTO_SYNC_ROOT}/vendor/llvm_root/llvm/lib/Target/AArch64/Disassembler/AArch64Disassembler.cpp",
+        "in": "{AUTO_SYNC_ROOT}/vendor/llvm_root/lib/Target/AArch64/Disassembler/AArch64Disassembler.cpp",
         "out": "AArch64Disassembler.c"
       },{
-        "in": "{AUTO_SYNC_ROOT}/vendor/llvm_root/llvm/lib/Target/AArch64/MCTargetDesc/AArch64InstPrinter.cpp",
+        "in": "{AUTO_SYNC_ROOT}/vendor/llvm_root/lib/Target/AArch64/MCTargetDesc/AArch64InstPrinter.cpp",
         "out": "AArch64InstPrinter.c"
       },{
-        "in": "{AUTO_SYNC_ROOT}/vendor/llvm_root/llvm/lib/Target/AArch64/MCTargetDesc/AArch64InstPrinter.h",
+        "in": "{AUTO_SYNC_ROOT}/vendor/llvm_root/lib/Target/AArch64/MCTargetDesc/AArch64InstPrinter.h",
         "out": "AArch64InstPrinter.h"
       },{
-        "in": "{AUTO_SYNC_ROOT}/vendor/llvm_root/llvm/lib/Target/AArch64/MCTargetDesc/AArch64AddressingModes.h",
+        "in": "{AUTO_SYNC_ROOT}/vendor/llvm_root/lib/Target/AArch64/MCTargetDesc/AArch64AddressingModes.h",
         "out": "AArch64AddressingModes.h"
       },{
-        "in": "{AUTO_SYNC_ROOT}/vendor/llvm_root/llvm/lib/Target/AArch64/Utils/AArch64BaseInfo.cpp",
+        "in": "{AUTO_SYNC_ROOT}/vendor/llvm_root/lib/Target/AArch64/Utils/AArch64BaseInfo.cpp",
         "out": "AArch64BaseInfo.c"
       },{
-        "in": "{AUTO_SYNC_ROOT}/vendor/llvm_root/llvm/lib/Target/AArch64/Utils/AArch64BaseInfo.h",
+        "in": "{AUTO_SYNC_ROOT}/vendor/llvm_root/lib/Target/AArch64/Utils/AArch64BaseInfo.h",
         "out": "AArch64BaseInfo.h"
       }
     ],
     "files_for_template_search": [
       "{AUTO_SYNC_ROOT}/build/llvm_inc/AArch64GenDisassemblerTables.inc",
       "{AUTO_SYNC_ROOT}/build/llvm_inc/AArch64GenAsmWriter.inc",
-      "{AUTO_SYNC_ROOT}/vendor/llvm_root/llvm/lib/Target/AArch64/Disassembler/AArch64Disassembler.cpp",
-      "{AUTO_SYNC_ROOT}/vendor/llvm_root/llvm/lib/Target/AArch64/MCTargetDesc/AArch64InstPrinter.cpp"
+      "{AUTO_SYNC_ROOT}/vendor/llvm_root/lib/Target/AArch64/Disassembler/AArch64Disassembler.cpp",
+      "{AUTO_SYNC_ROOT}/vendor/llvm_root/lib/Target/AArch64/MCTargetDesc/AArch64InstPrinter.cpp"
     ],
     "templates_with_arg_deduction": [
       "printImmSVE",

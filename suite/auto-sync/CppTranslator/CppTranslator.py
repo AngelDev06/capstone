@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import os
 from pathlib import Path
 
 import termcolor
@@ -75,8 +76,8 @@ class Translator:
     ts_cpp_lang: Language = None
     parser: Parser = None
     template_collector: TemplateCollector = None
-    src_paths: [Path]
-    out_paths: [Path]
+    src_paths: list[Path]
+    out_paths: list[Path]
     conf: dict
     src = b""
     current_src_path_in: Path = None
@@ -89,9 +90,9 @@ class Translator:
     #
     # If a patch must be executed before another patch (because the matching rules depend on it)
     # mark this dependency as you see below.
-    patches: [Patch] = list()
+    patches: list[Patch] = list()
 
-    patch_priorities: {str: int} = {
+    patch_priorities: dict[str, int] = {
         CppInitCast.__name__: 0,
         BitCastStdArray.__name__: 0,
         PrintRegImmShift.__name__: 0,
@@ -164,9 +165,9 @@ class Translator:
         self.ts_cpp_lang = self.configurator.get_cpp_lang()
         self.parser = self.configurator.get_parser()
 
-        self.src_paths: [Path] = [get_path(sp["in"]) for sp in self.conf["files_to_translate"]]
+        self.src_paths: list[Path] = [get_path(sp["in"]) for sp in self.conf["files_to_translate"]]
         t_out_dir: Path = get_path(self.conf_general["translation_out_dir"])
-        self.out_paths: [Path] = [t_out_dir.joinpath(sp["out"]) for sp in self.conf["files_to_translate"]]
+        self.out_paths: list[Path] = [t_out_dir.joinpath(sp["out"]) for sp in self.conf["files_to_translate"]]
 
         self.collect_template_instances()
         self.init_patches()
@@ -307,7 +308,7 @@ class Translator:
         log.debug("Parse source code")
         self.tree = self.parser.parse(self.src, keep_text=True)
 
-    def patch_src(self, p_list: [(bytes, Node)]) -> None:
+    def patch_src(self, p_list: list[tuple[bytes, Node]]) -> None:
         if len(p_list) == 0:
             return
         # Sort list of patches descending so the patches which are last in the file
@@ -321,8 +322,8 @@ class Translator:
         for patch, node in patches:
             start_byte: int = node.start_byte
             old_end_byte: int = node.end_byte
-            start_point: (int, int) = node.start_point
-            old_end_point: (int, int) = node.end_point
+            start_point: tuple[int, int] = node.start_point
+            old_end_point: tuple[int, int] = node.end_point
 
             new_src = self.src[:start_byte] + patch + self.src[old_end_byte:]
             self.src = new_src
@@ -376,7 +377,7 @@ class Translator:
                 # Additionally, it can include captures within this subtree.
                 # Here we bundle these captures together.
                 query: Query = self.ts_cpp_lang.query(pattern)
-                captures_bundle: [[(Node, str)]] = list()
+                captures_bundle: list[list[tuple[Node, str]]] = list()
                 for q in query.captures(self.tree.root_node):
                     if q[1] == patch.get_main_capture_name():
                         # The main capture the patch is looking for.
@@ -388,8 +389,8 @@ class Translator:
 
                 log.debug(f"Patch {patch.__class__.__name__} (to patch: {len(captures_bundle)}).")
 
-                p_list: (bytes, Node) = list()
-                cb: [(Node, str)]
+                p_list: list[tuple[bytes, Node]] = list()
+                cb: list[tuple[Node, str]]
                 for cb in captures_bundle:
                     patch_kwargs = self.get_patch_kwargs(patch)
                     bytes_patch: bytes = patch.get_patch(cb, self.src, **patch_kwargs)
@@ -466,13 +467,14 @@ if __name__ == "__main__":
     if not sys.hexversion >= 0x030B00F0:
         log.fatal("Python >= v3.11 required.")
         exit(1)
-
+    
     args = parse_args()
     log.basicConfig(
         level=convert_loglevel(args.verbosity),
         stream=sys.stdout,
         format="%(levelname)-5s - %(message)s",
     )
+
     configurator = Configurator(args.arch, args.config_path, args.grammar, args.lang_so)
     translator = Translator(configurator)
     translator.translate()
