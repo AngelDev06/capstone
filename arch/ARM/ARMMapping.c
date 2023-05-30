@@ -515,6 +515,43 @@ static void ARM_add_not_defined_ops(MCInst *MI)
 	}
 }
 
+/// Gets the encoding of the register in the reglist.
+/// Most of the times it's entirely based on the bit position of the register in the reglist since for example
+/// bit 3 represents r3 and bit 4 r4 and so on. But there are some exceptions (for thumb instructions mainly)
+static void ARM_add_reglist_reg_encoding(MCInst *MI, arm_reg reg)
+{
+	cs_operand_encoding *encoding = &ARM_get_detail_op(MI, 0)->encoding;
+	encoding->operand_pieces_count = 1;
+	encoding->sizes[0] = 1;
+	unsigned Opcode = MCInst_getOpcode(MI);
+	// if it's r0-r13 we subtract 73 to get the respective bit num (for example r1 == 1)
+	// otherwise if it's lr or pc we add 1 for the same reason as above
+	unsigned RegBitNum = reg >= 73 ? reg - 73 : reg + 1;
+
+	switch (Opcode) {
+	case ARM_tLDMIA:
+	case ARM_tLDMIA_UPD:
+	case ARM_tSTMIA_UPD:
+		encoding->indexes[0] = 15 - RegBitNum;
+		break;
+	case ARM_tPOP:
+		if (RegBitNum == 15) {
+			encoding->indexes[0] = 7;
+			return;
+		}
+		encoding->indexes[0] = 15 - RegBitNum;
+		return;
+	case ARM_tPUSH:
+		if (RegBitNum == 14) {
+			encoding->indexes[0] = 7;
+			return;
+		}
+		encoding->indexes[0] = 15 - RegBitNum;
+		return;
+	}
+	encoding->indexes[0] = 31 - RegBitNum;
+}
+
 /// Unfortunately there is currently no way to easily extract
 /// informaion about the vector data usage (sign and width used).
 /// See: https://github.com/capstone-engine/capstone/issues/2152
@@ -721,6 +758,7 @@ void ARM_set_instr_map_data(MCInst *MI)
 	map_implicit_writes(MI, arm_insns);
 	ARM_check_updates_flags(MI);
 	map_groups(MI, arm_insns);
+	map_opcode_encoding(MI, arm_insns);
 }
 
 bool ARM_getInstruction(csh handle, const uint8_t *code, size_t code_len,
@@ -973,6 +1011,7 @@ static void add_cs_detail_general(MCInst *MI, arm_op_group op_group,
 		if ((unsigned)CC == 15 &&
 		    op_group == ARM_OP_GROUP_PredicateOperand) {
 			ARM_get_detail(MI)->cc = ARMCC_UNDEF;
+
 			return;
 		}
 		if (CC == ARMCC_HS &&
@@ -1140,14 +1179,13 @@ static void add_cs_detail_general(MCInst *MI, arm_op_group op_group,
 		// But the MappingInsnOps.inc has only a single entry for the whole
 		// list. So all registers in the list share those attributes.
 		unsigned access = map_get_op_access(MI, OpNum);
-		for (unsigned i = OpNum, e = MCInst_getNumOperands(MI); i != e;
-		     ++i) {
-			unsigned Reg =
-				MCOperand_getReg(MCInst_getOperand(MI, i));
+		for (unsigned i = OpNum, e = MCInst_getNumOperands(MI); i != e; ++i) {
+			unsigned Reg = MCOperand_getReg(MCInst_getOperand(MI, i));
 
 			ARM_get_detail_op(MI, 0)->type = ARM_OP_REG;
 			ARM_get_detail_op(MI, 0)->reg = Reg;
 			ARM_get_detail_op(MI, 0)->access = access;
+			ARM_add_reglist_reg_encoding(MI, Reg);
 			ARM_inc_op_count(MI);
 		}
 		break;
@@ -1652,6 +1690,7 @@ static void add_cs_detail_general(MCInst *MI, arm_op_group op_group,
 		ARM_get_detail_op(MI, 0)->mem.scale = 1;
 		ARM_get_detail_op(MI, 0)->mem.disp = OffImm;
 		ARM_get_detail_op(MI, 0)->access = CS_AC_READ;
+		ARM_get_detail_op(MI, 0)->encoding = map_get_op_encoding(MI, OpNum);
 		ARM_inc_op_count(MI);
 		break;
 	}
@@ -1675,6 +1714,7 @@ static void add_cs_detail_general(MCInst *MI, arm_op_group op_group,
 			ARM_get_detail_op(MI, 0)->type = ARM_OP_SETEND;
 			ARM_get_detail_op(MI, 0)->setend = ARM_SETEND_LE;
 		}
+		ARM_get_detail_op(MI, 0)->encoding = map_get_op_encoding(MI, OpNum);
 		ARM_inc_op_count(MI);
 		break;
 	}
@@ -1785,6 +1825,7 @@ static void add_cs_detail_template_1(MCInst *MI, arm_op_group op_group,
 		Op->mem.scale = 1;
 		Op->mem.disp = 0;
 		Op->access = CS_AC_READ;
+		Op->encoding = map_get_op_encoding(MI, OpNum);
 
 		ARM_AM_AddrOpc SubFlag =
 			ARM_AM_getAM5Op(MCInst_getOpVal(MI, OpNum + 1));
@@ -1973,6 +2014,7 @@ void ARM_set_detail_op_reg(MCInst *MI, unsigned OpNum, arm_reg Reg)
 	ARM_get_detail_op(MI, 0)->type = ARM_OP_REG;
 	ARM_get_detail_op(MI, 0)->reg = Reg;
 	ARM_get_detail_op(MI, 0)->access = map_get_op_access(MI, OpNum);
+	ARM_get_detail_op(MI, 0)->encoding = map_get_op_encoding(MI, OpNum);
 	ARM_inc_op_count(MI);
 }
 
@@ -1991,6 +2033,7 @@ void ARM_set_detail_op_imm(MCInst *MI, unsigned OpNum, arm_op_type ImmType,
 	ARM_get_detail_op(MI, 0)->type = ImmType;
 	ARM_get_detail_op(MI, 0)->imm = Imm;
 	ARM_get_detail_op(MI, 0)->access = map_get_op_access(MI, OpNum);
+	ARM_get_detail_op(MI, 0)->encoding = map_get_op_encoding(MI, OpNum);
 	ARM_inc_op_count(MI);
 }
 
@@ -2070,6 +2113,7 @@ void ARM_set_detail_op_mem(MCInst *MI, unsigned OpNum, bool is_index_reg,
 
 	ARM_get_detail_op(MI, 0)->type = ARM_OP_MEM;
 	ARM_get_detail_op(MI, 0)->access = map_get_op_access(MI, OpNum);
+	ARM_get_detail_op(MI, 0)->encoding = map_get_op_encoding(MI, OpNum);
 }
 
 /// Sets the neon_lane in the previous operand to the value of
@@ -2112,6 +2156,7 @@ void ARM_set_detail_op_sysop(MCInst *MI, int Val, arm_op_type type,
 	ARM_get_detail_op(MI, 0)->sysop.sysm = Sysm;
 	ARM_get_detail_op(MI, 0)->sysop.msr_mask = Mask;
 	ARM_get_detail_op(MI, 0)->access = IsOutReg ? CS_AC_WRITE : CS_AC_READ;
+  ARM_get_detail_op(MI, 0)->encoding = map_get_op_encoding(MI, OpNum);
 	ARM_inc_op_count(MI);
 }
 
@@ -2123,6 +2168,7 @@ void ARM_set_detail_op_float(MCInst *MI, unsigned OpNum, uint64_t Imm)
 		return;
 	ARM_get_detail_op(MI, 0)->type = ARM_OP_FP;
 	ARM_get_detail_op(MI, 0)->fp = ARM_AM_getFPImmFloat(Imm);
+	ARM_get_detail_op(MI, 0)->encoding = map_get_op_encoding(MI, OpNum);
 	ARM_inc_op_count(MI);
 }
 
