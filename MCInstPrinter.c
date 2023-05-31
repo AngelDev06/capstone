@@ -5,8 +5,12 @@
 #include "cs_priv.h"
 #include <capstone/platform.h>
 
+#ifdef CAPSTONE_HAS_ARM
 extern bool ARM_getFeatureBits(unsigned int mode, unsigned int feature);
+#endif
+#ifdef CAPSTONE_HAS_POWERPC
 extern bool PPC_getFeatureBits(unsigned int mode, unsigned int feature);
+#endif
 
 static bool testFeatureBits(const MCInst *MI, uint32_t Value)
 {
@@ -14,10 +18,14 @@ static bool testFeatureBits(const MCInst *MI, uint32_t Value)
 	switch (MI->csh->arch) {
 	default:
 		assert(0 && "Not implemented for current arch.");
+	#ifdef CAPSTONE_HAS_ARM
 	case CS_ARCH_ARM:
 		return ARM_getFeatureBits(MI->csh->mode, Value);
+	#endif
+	#ifdef CAPSTONE_HAS_POWERPC
 	case CS_ARCH_PPC:
 		return PPC_getFeatureBits(MI->csh->mode, Value);
+	#endif
 	}
 }
 
