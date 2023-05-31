@@ -137,9 +137,9 @@ class Differ:
 
     ts_cpp_lang: Language = None
     parser: Parser = None
-    translated_files: [Path]
-    diff_dest_files: [Path] = list()
-    old_files: [Path]
+    translated_files: list[Path]
+    diff_dest_files: list[Path] = list()
+    old_files: list[Path]
     conf_arch: dict
     conf_general: dict
     tree: Tree = None
@@ -634,7 +634,7 @@ if __name__ == "__main__":
         format="%(levelname)-5s - %(message)s",
     )
     cfg = Configurator(args.arch, args.config_path, args.grammar, args.lang_so)
-
+    
     differ = Differ(cfg, args.no_auto_apply)
     try:
         differ.diff()
