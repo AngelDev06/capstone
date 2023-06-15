@@ -1,7 +1,8 @@
-#!/bin/sh -x
+#!/bin/sh
 
 pause() {
-  read -n 1 -s -r -p "Press any key to exit"
+  echo "Press any key to exit"
+  read -r
   exit
 }
 print_and_pause() {
@@ -26,7 +27,7 @@ verify_status() {
   status=$1
   error_msg="$2"
 
-  if [ $status != 0 ]; then
+  if [ "$status" != 0 ]; then
     echo "$error_msg"
     pause
   fi
@@ -111,62 +112,71 @@ tblgen="$2"
 llvm_target_dir="$1"
 
 # if we are executing this under wsl on windows we want to correct the path that is passed to the exe file
-if [[ "$tblgen" == *.exe ]]; then
-  path_to_llvm=${path_to_llvm/$linux_prefix/$windows_prefix}
-fi
+case "$tblgen" in
+  *.exe)
+    path_to_llvm=$(echo "$path_to_llvm" | sed "s|$linux_prefix|$windows_prefix|");;
+  *);;
+esac
 
-if ! echo $supported | grep -q -w "$arch" ; then
+if ! echo "$supported" | grep -q -w "$arch" ; then
   echo "[x] $arch is not supported by the updater. Supported are: $supported"
   pause
 fi
 
-if [ $arch = "PPC" ]; then
+files_to_move="$arch""GenCSInsnEnum.inc ""$arch""GenCSFeatureEnum.inc "
+if [ "$arch" = "PPC" ]; then
   llvm_target_dir="PowerPC"
+  files_to_move="$files_to_move""GenCSInsnFormatsEnum.inc "
 fi
 
 setup_build_dir
 check_llvm "$llvm_root" "$tblgen"
 
 echo "[*] Generate Disassembler tables..."
-"$tblgen" --printerLang=CCS --gen-disassembler -I "$path_to_llvm/include/" -I "$path_to_llvm/lib/Target/$llvm_target_dir/" "$path_to_llvm/lib/Target/$llvm_target_dir/$arch.td" > $llvm_c_inc_dir"/"$arch"GenDisassemblerTables.inc"
+"$tblgen" --printerLang=CCS --gen-disassembler -I "$path_to_llvm/include/" -I "$path_to_llvm/lib/Target/$llvm_target_dir/" "$path_to_llvm/lib/Target/$llvm_target_dir/$arch.td" > $llvm_c_inc_dir"/""$arch""GenDisassemblerTables.inc"
 verify_status $? "[X] Failed to generate disassembler tables for capstone"
-"$tblgen" --printerLang=C++ --gen-disassembler -I "$path_to_llvm/include/" -I "$path_to_llvm/lib/Target/$llvm_target_dir/" "$path_to_llvm/lib/Target/$llvm_target_dir/$arch.td" > $llvm_inc_dir"/"$arch"GenDisassemblerTables.inc"
+"$tblgen" --printerLang=C++ --gen-disassembler -I "$path_to_llvm/include/" -I "$path_to_llvm/lib/Target/$llvm_target_dir/" "$path_to_llvm/lib/Target/$llvm_target_dir/$arch.td" > $llvm_inc_dir"/""$arch""GenDisassemblerTables.inc"
 verify_status $? "[X] Failed to generate disassembler tables for llvm"
 
 echo "[*] Generate AsmWriter tables..."
-"$tblgen" --printerLang=CCS --gen-asm-writer -I "$path_to_llvm/include/" -I "$path_to_llvm/lib/Target/$llvm_target_dir/" "$path_to_llvm/lib/Target/$llvm_target_dir/$arch.td" > $llvm_c_inc_dir"/"$arch"GenAsmWriter.inc"
+"$tblgen" --printerLang=CCS --gen-asm-writer -I "$path_to_llvm/include/" -I "$path_to_llvm/lib/Target/$llvm_target_dir/" "$path_to_llvm/lib/Target/$llvm_target_dir/$arch.td" > $llvm_c_inc_dir"/""$arch""GenAsmWriter.inc"
 verify_status $? "[X] Failed to generate AsmWriter tables for capstone"
-"$tblgen" --printerLang=C++ --gen-asm-writer -I "$path_to_llvm/include/" -I "$path_to_llvm/lib/Target/$llvm_target_dir/" "$path_to_llvm/lib/Target/$llvm_target_dir/$arch.td" > $llvm_inc_dir"/"$arch"GenAsmWriter.inc"
+"$tblgen" --printerLang=C++ --gen-asm-writer -I "$path_to_llvm/include/" -I "$path_to_llvm/lib/Target/$llvm_target_dir/" "$path_to_llvm/lib/Target/$llvm_target_dir/$arch.td" > $llvm_inc_dir"/""$arch""GenAsmWriter.inc"
 verify_status $? "[X] Failed to generate AsmWriter tables for llvm"
 
 echo "[*] Generate RegisterInfo tables..."
-"$tblgen" --printerLang=CCS --gen-register-info -I "$path_to_llvm/include/" -I "$path_to_llvm/lib/Target/$llvm_target_dir/" "$path_to_llvm/lib/Target/$llvm_target_dir/$arch.td" > $llvm_c_inc_dir"/"$arch"GenRegisterInfo.inc"
+"$tblgen" --printerLang=CCS --gen-register-info -I "$path_to_llvm/include/" -I "$path_to_llvm/lib/Target/$llvm_target_dir/" "$path_to_llvm/lib/Target/$llvm_target_dir/$arch.td" > $llvm_c_inc_dir"/""$arch""GenRegisterInfo.inc"
 verify_status $? "[X] Failed to generate RegisterInfo tables for capstone"
 
 echo "[*] Generate InstrInfo tables..."
-"$tblgen" --printerLang=CCS --gen-instr-info -I "$path_to_llvm/include/" -I "$path_to_llvm/lib/Target/$llvm_target_dir/" "$path_to_llvm/lib/Target/$llvm_target_dir/$arch.td" > $llvm_c_inc_dir"/"$arch"GenInstrInfo.inc"
+"$tblgen" --printerLang=CCS --gen-instr-info -I "$path_to_llvm/include/" -I "$path_to_llvm/lib/Target/$llvm_target_dir/" "$path_to_llvm/lib/Target/$llvm_target_dir/$arch.td" > $llvm_c_inc_dir"/""$arch""GenInstrInfo.inc"
 verify_status $? "[X] Failed to generate InstrInfo tables for capstone"
 
 echo "[*] Generate SubtargetInfo tables..."
-"$tblgen" --printerLang=CCS --gen-subtarget -I "$path_to_llvm/include/" -I "$path_to_llvm/lib/Target/$llvm_target_dir/" "$path_to_llvm/lib/Target/$llvm_target_dir/$arch.td" > $llvm_c_inc_dir"/"$arch"GenSubtargetInfo.inc"
+"$tblgen" --printerLang=CCS --gen-subtarget -I "$path_to_llvm/include/" -I "$path_to_llvm/lib/Target/$llvm_target_dir/" "$path_to_llvm/lib/Target/$llvm_target_dir/$arch.td" > $llvm_c_inc_dir"/""$arch""GenSubtargetInfo.inc"
 verify_status $? "[X] Failed to generate SubtargetInfo tables for capstone"
 
+cd "$llvm_c_inc_dir" || print_and_pause "[X] Could not enter $llvm_c_inc_dir directory"
 echo "[*] Generate Mapping tables..."
 "$tblgen" --printerLang=CCS --gen-asm-matcher -I "$path_to_llvm/include/" -I "$path_to_llvm/lib/Target/$llvm_target_dir/" "$path_to_llvm/lib/Target/$llvm_target_dir/$arch.td"
 verify_status $? "[X] Failed to generate Mapping tables for capstone"
+mv $files_to_move ..
+cd ..
 
 has_sys_reg_tables="ARM, AArch64"
 if echo "$has_sys_reg_tables" | grep -q -w "$arch"; then
+  cd "$llvm_c_inc_dir" || print_and_pause "[X] Could not enter $llvm_c_inc_dir directory"
   echo "[*] Generate System Register tables..."
   "$tblgen" --printerLang=CCS --gen-searchable-tables -I "$path_to_llvm/include/" -I "$path_to_llvm/lib/Target/$llvm_target_dir/" "$path_to_llvm/lib/Target/$llvm_target_dir/$arch.td"
   verify_status $? "[X] Failed to generate System Register tables for capstone"
   sed -i "s/##ARCH##/$arch/g" __ARCH__GenCSSystemRegisterEnum.inc
   sed -i "s/##ARCH##/$arch/g" __ARCH__GenSystemRegister.inc
-  cp __ARCH__GenCSSystemRegisterEnum.inc $arch"GenCSSystemRegisterEnum.inc"
-  cp __ARCH__GenSystemRegister.inc $arch"GenSystemRegister.inc"
+  mv __ARCH__GenCSSystemRegisterEnum.inc "../$arch""GenCSSystemRegisterEnum.inc"
+  mv __ARCH__GenSystemRegister.inc "$arch""GenSystemRegister.inc"
   if [ "$arch" = "AArch64" ]; then
     mv "AArch64GenSystemRegister.inc" "AArch64GenSystemOperands.inc"
   fi
+  cd ..
 fi
 
 if find -- "../vendor/tree-sitter-cpp/" -prune -type d -empty | grep -q '^'; then
@@ -203,7 +213,7 @@ cd "$cs_root/suite/auto-sync/build" || print_and_pause "[X] Failed to enter the 
 cs_arch_dir="$cs_root/arch/$llvm_target_dir/"
 cs_inc_dir="$cs_root/include/capstone"
 
-into_arch_main_header=$arch"GenCSInsnEnum.inc "$arch"GenCSFeatureEnum.inc "$arch"GenCSRegEnum.inc "$arch"GenCSSystemRegisterEnum.inc "$arch"GenCSInsnFormatsEnum.inc "
+into_arch_main_header=$arch"GenCSInsnEnum.inc ""$arch""GenCSFeatureEnum.inc ""$arch""GenCSRegEnum.inc ""$arch""GenCSSystemRegisterEnum.inc ""$arch""GenCSInsnFormatsEnum.inc "
 header_file=$(echo "$arch" | awk '{print tolower($0)}')
 main_header="$cs_inc_dir/$header_file.h"
 
@@ -211,8 +221,8 @@ for f in $into_arch_main_header; do
   python3 ../PatchMainHeader.py --header "$main_header" --inc "$f"
 done
 
-for f in "$arch".*.inc; do
-  if ! grep -q -w "$f" <<< "$into_arch_main_header"; then
+for f in "$arch"*.inc; do
+  if echo "$into_arch_main_header" | grep -q -w "$f"; then
     sed -i "s|LLVM-commit: <commit>|LLVM-commit: $llvm_release_commit|g" "$f"
     sed -i "s|LLVM-tag: <tag>|LLVM-tag: $llvm_release_tag|g" "$f"
     cp "$f" "$cs_arch_dir"
