@@ -34,12 +34,28 @@ verify_status() {
 }
 fetch_llvm_root() {
   current_dir="$PWD"
-  path_to_tablegen="$1"
-  path_portion="/llvm-tblgen"
-  root="${path_to_tablegen%"$path_portion"*}"
-  cd "$root" || print_and_pause "[X] Failed to enter the tblgen directory"
+  if [ $# -eq 2 ]; then
+    if [ "$1" = "--wsl" ]; then
+      has_wsl=1
+    else
+      has_wsl=0
+    fi
+    tblgen_dir=$(dirname "$2")
+  elif [ $# -eq 1 ]; then
+    tblgen_dir=$(dirname "$1")
+    has_wsl=0
+  else
+    echo "[X] Invalid number of arguments passed to fetch_llvm_root"
+    pause
+  fi
+  
+  cd "$tblgen_dir" || print_and_pause "[X] Failed to enter the tblgen directory"
   llvm_root_path=$(git rev-parse --show-toplevel)
   cd "$current_dir" || print_and_pause "[X] Failed to re-enter the current working directory"
+
+  if [ $has_wsl -ne 0 ]; then
+    llvm_root_path=$(wslpath -m "$llvm_root_path")
+  fi
   echo "$llvm_root_path/llvm"
 }
 
@@ -102,21 +118,19 @@ if ! echo "$2" | grep -q -w "$path_portion" ; then
   pause
 fi
 
-linux_prefix="/mnt/c/"
-windows_prefix="C:/"
+# if we are executing this under wsl on windows we want to correct the path to the exe file
+if [ -n "$WSL_DISTRO_NAME" ]; then
+  tblgen=$(wslpath -u "$2")
+  llvm_root=$(fetch_llvm_root --wsl "$tblgen")
+else
+  tblgen="$2"
+  llvm_root=$(fetch_llvm_root "$2")
+fi
+
 arch="$1"
-llvm_root=$(fetch_llvm_root "$2")
 path_to_llvm="$llvm_root"
 llvm_release_commit="$3"
-tblgen="$2"
 llvm_target_dir="$1"
-
-# if we are executing this under wsl on windows we want to correct the path that is passed to the exe file
-case "$tblgen" in
-  *.exe)
-    path_to_llvm=$(echo "$path_to_llvm" | sed "s|$linux_prefix|$windows_prefix|");;
-  *);;
-esac
 
 if ! echo "$supported" | grep -q -w "$arch" ; then
   echo "[x] $arch is not supported by the updater. Supported are: $supported"
