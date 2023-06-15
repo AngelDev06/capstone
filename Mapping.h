@@ -29,6 +29,7 @@ typedef struct insn_map {
 	union {
 		ppc_suppl_info ppc;
 	} suppl_info; // Supplementary information for each instruction.
+	cs_opcode_encoding opcode_encoding;
 #endif
 } insn_map;
 
@@ -49,6 +50,7 @@ typedef struct {
 	uint8_t							 /* cs_data_type */
 		dtypes[MAX_NO_DATA_TYPES];	 ///< List of op types. Terminated by
 									 ///< CS_DATA_TYPE_LAST
+	cs_operand_encoding encoding; ///< The encoding of the operand
 } mapping_op;
 
 #define MAX_NO_INSN_MAP_OPS 16
@@ -68,6 +70,10 @@ const cs_ac_type mapping_get_op_access(MCInst *MI, unsigned OpNum,
 									   const map_insn_ops *insn_ops_map,
 									   size_t map_size);
 
+const cs_operand_encoding
+mapping_get_op_encoding(MCInst *MI, unsigned OpNum,
+						const map_insn_ops *insn_ops_map, size_t map_size);
+
 /// Macro for easier access of operand types from the map.
 /// Assumes the istruction operands map is called "insn_operands"
 /// Only usable by `auto-sync` archs!
@@ -81,6 +87,10 @@ const cs_ac_type mapping_get_op_access(MCInst *MI, unsigned OpNum,
 #define map_get_op_access(MI, OpNum)                                           \
 	mapping_get_op_access(MI, OpNum, insn_operands,                            \
 						  sizeof(insn_operands) / sizeof(insn_operands[0]))
+
+#define map_get_op_encoding(MI, OpNum)                                         \
+	mapping_get_op_encoding(MI, OpNum, insn_operands,                          \
+							sizeof(insn_operands) / sizeof(insn_operands[0]))
 
 ///< Map for ids to their string
 typedef struct name_map {
@@ -103,6 +113,8 @@ void map_implicit_reads(MCInst *MI, const insn_map *imap);
 void map_implicit_writes(MCInst *MI, const insn_map *imap);
 
 void map_groups(MCInst *MI, const insn_map *imap);
+
+void map_opcode_encoding(MCInst *MI, const insn_map *imap);
 
 void map_cs_id(MCInst *MI, const insn_map *imap, unsigned int imap_size);
 
