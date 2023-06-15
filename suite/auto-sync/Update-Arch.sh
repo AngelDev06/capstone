@@ -50,13 +50,13 @@ fetch_llvm_root() {
   fi
   
   cd "$tblgen_dir" || print_and_pause "[X] Failed to enter the tblgen directory"
-  llvm_root_path=$(git rev-parse --show-toplevel)
+  llvm_root="$(git rev-parse --show-toplevel)/llvm"
+  wsl_llvm_root="$llvm_root"
   cd "$current_dir" || print_and_pause "[X] Failed to re-enter the current working directory"
 
   if [ $has_wsl -ne 0 ]; then
-    llvm_root_path=$(wslpath -m "$llvm_root_path")
+    wsl_llvm_root=$(wslpath -m "$llvm_root")
   fi
-  echo "$llvm_root_path/llvm"
 }
 
 build_dir="build"
@@ -121,14 +121,16 @@ fi
 # if we are executing this under wsl on windows we want to correct the path to the exe file
 if [ -n "$WSL_DISTRO_NAME" ]; then
   tblgen=$(wslpath -u "$2")
-  llvm_root=$(fetch_llvm_root --wsl "$tblgen")
+  fetch_llvm_root --wsl "$tblgen"
 else
   tblgen="$2"
-  llvm_root=$(fetch_llvm_root "$2")
+  fetch_llvm_root "$2"
 fi
 
 arch="$1"
-path_to_llvm="$llvm_root"
+# path_to_llvm is passed to tblgen, so if we are running this under wsl we got to make sure the path is a valid windows path
+# if we aren't in wsl this is identical to llvm_root
+path_to_llvm="$wsl_llvm_root"
 llvm_release_commit="$3"
 llvm_target_dir="$1"
 
