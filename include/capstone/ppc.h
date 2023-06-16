@@ -43,7 +43,7 @@ extern "C" {
 /// The bits "at" are both present if:
 /// 		- CTR is decremented, but CR is not checked.
 ///     - CR is checked, but CTR is not decremented.
-typedef enum ppc_bc {
+typedef enum {
 	// Technically this could be read as a valid predicate
 	// But the ISA recommends to set the z bits to 0,
 	// so it shouldn't come to conflicts.
@@ -145,9 +145,9 @@ static inline ppc_br_hint PPC_get_hint(uint8_t bo) {
 	if (!DecrCTR && !TestCR)
 		return PPC_BR_NOT_GIVEN;
 	else if (DecrCTR && !TestCR)
-		return ((bo & PPC_BO_CR_CMP) >> 2) | (bo & PPC_BO_T);
+		return (ppc_br_hint)(((bo & PPC_BO_CR_CMP) >> 2) | (bo & PPC_BO_T));
 	else if (!DecrCTR && TestCR)
-		return (bo & PPC_BO_CTR_CMP) | (bo & PPC_BO_T);
+		return (ppc_br_hint)((bo & PPC_BO_CTR_CMP) | (bo & PPC_BO_T));
 	return PPC_BR_NOT_GIVEN;
 }
 
