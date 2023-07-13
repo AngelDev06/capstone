@@ -76,7 +76,7 @@ void ARM_set_detail_op_float(MCInst *MI, unsigned OpNum, uint64_t Imm);
 void ARM_set_detail_op_mem(MCInst *MI, unsigned OpNum, bool is_index_reg,
 			   int scale, int lshift, uint64_t Val);
 void ARM_set_detail_op_mem_offset(MCInst *MI, unsigned OpNum, uint64_t Val,
-				  bool subtracted);
+								  bool subtracted, arm_mem_format Format);
 void ARM_set_detail_op_neon_lane(MCInst *MI, unsigned OpNum);
 
 void ARM_check_updates_flags(MCInst *MI);
