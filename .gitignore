@@ -126,6 +126,7 @@ fuzz_decode_platform
 capstone_get_setup
 suite/fuzz/
 suite/cstest/cmocka/
+suite/auto-sync/vendor/
 
 *.s
 
