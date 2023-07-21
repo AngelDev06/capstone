@@ -1,0 +1,191 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|ARM">
+      <Configuration>Debug</Configuration>
+      <Platform>ARM</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|ARM">
+      <Configuration>Release</Configuration>
+      <Platform>ARM</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|ARM64">
+      <Configuration>Debug</Configuration>
+      <Platform>ARM64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|ARM64">
+      <Configuration>Release</Configuration>
+      <Platform>ARM64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\arch\ARM\ARMBaseInfo.c" />
+    <ClCompile Include="..\..\arch\ARM\ARMDisassembler.c" />
+    <ClCompile Include="..\..\arch\ARM\ARMDisassemblerExtension.c" />
+    <ClCompile Include="..\..\arch\ARM\ARMInstPrinter.c" />
+    <ClCompile Include="..\..\arch\ARM\ARMMapping.c" />
+    <ClCompile Include="..\..\arch\ARM\ARMModule.c" />
+    <ClCompile Include="..\..\cs.c" />
+    <ClCompile Include="..\..\Mapping.c" />
+    <ClCompile Include="..\..\MCInst.c" />
+    <ClCompile Include="..\..\MCInstPrinter.c" />
+    <ClCompile Include="..\..\MCInstrDesc.c" />
+    <ClCompile Include="..\..\MCRegisterInfo.c" />
+    <ClCompile Include="..\..\SStream.c" />
+    <ClCompile Include="..\..\utils.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\arch\ARM\ARMAddressingModes.h" />
+    <ClInclude Include="..\..\arch\ARM\ARMBaseInfo.h" />
+    <ClInclude Include="..\..\arch\ARM\ARMDisassemblerExtension.h" />
+    <ClInclude Include="..\..\arch\ARM\ARMInstPrinter.h" />
+    <ClInclude Include="..\..\arch\ARM\ARMLinkage.h" />
+    <ClInclude Include="..\..\arch\ARM\ARMMapping.h" />
+    <ClInclude Include="..\..\arch\ARM\ARMModule.h" />
+    <ClInclude Include="..\..\cs_operand.h" />
+    <ClInclude Include="..\..\cs_priv.h" />
+    <ClInclude Include="..\..\cs_simple_types.h" />
+    <ClInclude Include="..\..\include\capstone\arm.h" />
+    <ClInclude Include="..\..\include\capstone\arm64.h" />
+    <ClInclude Include="..\..\include\capstone\bpf.h" />
+    <ClInclude Include="..\..\include\capstone\capstone.h" />
+    <ClInclude Include="..\..\include\capstone\evm.h" />
+    <ClInclude Include="..\..\include\capstone\m680x.h" />
+    <ClInclude Include="..\..\include\capstone\m68k.h" />
+    <ClInclude Include="..\..\include\capstone\mips.h" />
+    <ClInclude Include="..\..\include\capstone\mos65xx.h" />
+    <ClInclude Include="..\..\include\capstone\platform.h" />
+    <ClInclude Include="..\..\include\capstone\ppc.h" />
+    <ClInclude Include="..\..\include\capstone\riscv.h" />
+    <ClInclude Include="..\..\include\capstone\sh.h" />
+    <ClInclude Include="..\..\include\capstone\sparc.h" />
+    <ClInclude Include="..\..\include\capstone\systemz.h" />
+    <ClInclude Include="..\..\include\capstone\tms320c64x.h" />
+    <ClInclude Include="..\..\include\capstone\tricore.h" />
+    <ClInclude Include="..\..\include\capstone\wasm.h" />
+    <ClInclude Include="..\..\include\capstone\x86.h" />
+    <ClInclude Include="..\..\include\capstone\xcore.h" />
+    <ClInclude Include="..\..\LEB128.h" />
+    <ClInclude Include="..\..\Mapping.h" />
+    <ClInclude Include="..\..\MathExtras.h" />
+    <ClInclude Include="..\..\MCDisassembler.h" />
+    <ClInclude Include="..\..\MCFixedLenDisassembler.h" />
+    <ClInclude Include="..\..\MCInst.h" />
+    <ClInclude Include="..\..\MCInstPrinter.h" />
+    <ClInclude Include="..\..\MCInstrDesc.h" />
+    <ClInclude Include="..\..\MCRegisterInfo.h" />
+    <ClInclude Include="..\..\SStream.h" />
+    <ClInclude Include="..\..\utils.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\arch\ARM\ARMFeatureEnum.inc" />
+    <None Include="..\..\arch\ARM\ARMGenAsmWriter.inc" />
+    <None Include="..\..\arch\ARM\ARMGenCSFeatureName.inc" />
+    <None Include="..\..\arch\ARM\ARMGenCSMappingInsn.inc" />
+    <None Include="..\..\arch\ARM\ARMGenCSMappingInsnName.inc" />
+    <None Include="..\..\arch\ARM\ARMGenCSMappingInsnOp.inc" />
+    <None Include="..\..\arch\ARM\ARMGenCSOpGroup.inc" />
+    <None Include="..\..\arch\ARM\ARMGenDisassemblerTables.inc" />
+    <None Include="..\..\arch\ARM\ARMGenInstrInfo.inc" />
+    <None Include="..\..\arch\ARM\ARMGenRegisterInfo.inc" />
+    <None Include="..\..\arch\ARM\ARMGenSubtargetInfo.inc" />
+    <None Include="..\..\arch\ARM\ARMGenSystemRegister.inc" />
+    <None Include="..\..\arch\ARM\ARMInsnEnum.inc" />
+    <None Include="..\..\arch\ARM\ARMMappingInsn.inc" />
+    <None Include="..\..\arch\ARM\ARMMappingInsnName.inc" />
+    <None Include="..\..\arch\ARM\ARMMappingInsnOp.inc" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{7530b11f-8be5-47c3-a022-3c26b95566b4}</ProjectGuid>
+    <Keyword>Android</Keyword>
+    <RootNamespace>capstone</RootNamespace>
+    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
+    <ApplicationType>Android</ApplicationType>
+    <ApplicationTypeRevision>3.0</ApplicationTypeRevision>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>Clang_5_0</PlatformToolset>
+    <AndroidAPILevel>android-29</AndroidAPILevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>Clang_5_0</PlatformToolset>
+    <AndroidAPILevel>android-29</AndroidAPILevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>Clang_5_0</PlatformToolset>
+    <AndroidAPILevel>android-29</AndroidAPILevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>Clang_5_0</PlatformToolset>
+    <AndroidAPILevel>android-29</AndroidAPILevel>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Label="Shared" />
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
+    <OutDir>$(ProjectDir)..\..\bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)..\..\build\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
+    <OutDir>$(ProjectDir)..\..\bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)..\..\build\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
+    <OutDir>$(ProjectDir)..\..\bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)..\..\build\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
+    <OutDir>$(ProjectDir)..\..\bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)..\..\build\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>CAPSTONE_HAS_ARM;CAPSTONE_USE_SYS_DYN_MEM;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <EnableNeonCodegen>true</EnableNeonCodegen>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>CAPSTONE_HAS_ARM;CAPSTONE_USE_SYS_DYN_MEM;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <EnableNeonCodegen>true</EnableNeonCodegen>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>CAPSTONE_HAS_ARM;CAPSTONE_USE_SYS_DYN_MEM;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <EnableNeonCodegen>true</EnableNeonCodegen>
+      <AdditionalOptions>-Wno-enum-conversion</AdditionalOptions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>CAPSTONE_HAS_ARM;CAPSTONE_USE_SYS_DYN_MEM;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <EnableNeonCodegen>true</EnableNeonCodegen>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets" />
+</Project>

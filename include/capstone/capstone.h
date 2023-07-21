@@ -18,7 +18,6 @@ extern "C" {
 #endif
 
 #include "cs_operand.h"
-#include "platform.h"
 
 #ifdef _MSC_VER
 #pragma warning(disable:4201)
@@ -352,26 +351,7 @@ typedef struct cs_opt_skipdata {
 	void *user_data;
 } cs_opt_skipdata;
 
-#define MAX_NUM_OP_ENC_ITEMS 8
 #define MAX_NUM_OPC_BITS 64
-
-/// Provides information about an operand's encoding in the instruction
-typedef struct cs_operand_encoding {
-	/// Specifies how many pieces that form the full operand are encoded in the
-	/// instruction separately. For example if count is 2 it means a few bits of
-	/// this operand are in one location and the rest on another. If it's 0 then
-	/// the operand is NOT encoded anywhere in the instruction.
-	uint8_t operand_pieces_count;
-	/// The bit positions of each piece that form the full operand in order. If
-	/// there is only one piece then there is only one index as well. Likewise
-	/// if there are 4 pieces, there are 4 indexes and so on.
-	/// Also note that these indices DON'T necessarily match the indices in the ISA
-	uint8_t indexes[MAX_NUM_OP_ENC_ITEMS];
-	/// The bit widths of each piece that form the full operand in order. If
-	/// there is only one piece then there is only one size as well. Likewise if
-	/// there are 4 pieces, there are 4 sizes and so on.
-	uint8_t sizes[MAX_NUM_OP_ENC_ITEMS];
-} cs_operand_encoding;
 
 /// Provides information about an operand's opcode in the instruction
 typedef struct cs_opcode_encoding {

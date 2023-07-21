@@ -704,7 +704,7 @@ void printAM3PreOrOffsetIndexOp(MCInst *MI, unsigned Op, SStream *O,
 		add_cs_detail(MI, \
 			      CONCAT(ARM_OP_GROUP_AddrMode3Operand, \
 				     AlwaysPrintImm0), \
-			      Op, AlwaysPrintImm0); \
+			      Op, (uint64_t)AlwaysPrintImm0); \
 		MCOperand *MO1 = MCInst_getOperand(MI, (Op)); \
 		if (!MCOperand_isReg(MO1)) { \
 			printOperand(MI, Op, O); \
@@ -778,7 +778,7 @@ void printPostIdxImm8s4Operand(MCInst *MI, unsigned OpNum, SStream *O)
 	{ \
 		add_cs_detail( \
 			MI, CONCAT(ARM_OP_GROUP_MveAddrModeRQOperand, shift), \
-			OpNum, shift); \
+			OpNum, (uint64_t)shift); \
 		MCOperand *MO1 = MCInst_getOperand(MI, (OpNum)); \
 		MCOperand *MO2 = MCInst_getOperand(MI, (OpNum + 1)); \
 \
@@ -814,7 +814,7 @@ DEFINE_printMveAddrModeRQOperand(0) DEFINE_printMveAddrModeRQOperand(3)
 		add_cs_detail(MI, \
 			      CONCAT(ARM_OP_GROUP_AddrMode5Operand, \
 				     AlwaysPrintImm0), \
-			      OpNum, AlwaysPrintImm0); \
+			      OpNum, (uint64_t)AlwaysPrintImm0); \
 		MCOperand *MO1 = MCInst_getOperand(MI, (OpNum)); \
 		MCOperand *MO2 = MCInst_getOperand(MI, (OpNum + 1)); \
 \
@@ -842,7 +842,7 @@ DEFINE_printAddrMode5Operand(false) DEFINE_printAddrMode5Operand(true)
 		add_cs_detail(MI, \
 			      CONCAT(ARM_OP_GROUP_AddrMode5FP16Operand, \
 				     AlwaysPrintImm0), \
-			      OpNum, AlwaysPrintImm0); \
+			      OpNum, (uint64_t)AlwaysPrintImm0); \
 		MCOperand *MO1 = MCInst_getOperand(MI, (OpNum)); \
 		MCOperand *MO2 = MCInst_getOperand(MI, (OpNum + 1)); \
 \
@@ -1245,7 +1245,7 @@ void printPCLabel(MCInst *MI, unsigned OpNum, SStream *O)
 						 SStream *O) \
 	{ \
 		add_cs_detail(MI, CONCAT(ARM_OP_GROUP_AdrLabelOperand, scale), \
-			      OpNum, scale); \
+			      OpNum, (uint64_t)scale); \
 		MCOperand *MO = MCInst_getOperand(MI, (OpNum)); \
 \
 		if (MCOperand_isExpr(MO)) { \
@@ -1399,7 +1399,7 @@ void printT2SOOperand(MCInst *MI, unsigned OpNum, SStream *O)
 		add_cs_detail(MI, \
 			      CONCAT(ARM_OP_GROUP_AddrModeImm12Operand, \
 				     AlwaysPrintImm0), \
-			      OpNum, AlwaysPrintImm0); \
+			      OpNum, (uint64_t)AlwaysPrintImm0); \
 		MCOperand *MO1 = MCInst_getOperand(MI, (OpNum)); \
 		MCOperand *MO2 = MCInst_getOperand(MI, (OpNum + 1)); \
 \
@@ -1438,7 +1438,7 @@ DEFINE_printAddrModeImm12Operand(false) DEFINE_printAddrModeImm12Operand(true)
 		add_cs_detail(MI, \
 			      CONCAT(ARM_OP_GROUP_T2AddrModeImm8Operand, \
 				     AlwaysPrintImm0), \
-			      OpNum, AlwaysPrintImm0); \
+			      OpNum, (uint64_t)AlwaysPrintImm0); \
 		MCOperand *MO1 = MCInst_getOperand(MI, (OpNum)); \
 		MCOperand *MO2 = MCInst_getOperand(MI, (OpNum + 1)); \
 \
@@ -1473,7 +1473,7 @@ DEFINE_printAddrModeImm12Operand(false) DEFINE_printAddrModeImm12Operand(true)
 		add_cs_detail(MI, \
 			      CONCAT(ARM_OP_GROUP_T2AddrModeImm8s4Operand, \
 				     AlwaysPrintImm0), \
-			      OpNum, AlwaysPrintImm0); \
+			      OpNum, (uint64_t)AlwaysPrintImm0); \
 		MCOperand *MO1 = MCInst_getOperand(MI, (OpNum)); \
 		MCOperand *MO2 = MCInst_getOperand(MI, (OpNum + 1)); \
 \
@@ -1897,7 +1897,7 @@ void printVectorListFourSpaced(MCInst *MI, unsigned OpNum, SStream *O)
 						 SStream *O) \
 	{ \
 		add_cs_detail(MI, CONCAT(ARM_OP_GROUP_MVEVectorList, NumRegs), \
-			      OpNum, NumRegs); \
+			      OpNum, (uint64_t)NumRegs); \
 		unsigned Reg = \
 			MCOperand_getReg(MCInst_getOperand(MI, (OpNum))); \
 		const char *Prefix = "{"; \
@@ -1920,7 +1920,7 @@ DEFINE_printMVEVectorList(2) DEFINE_printMVEVectorList(4)
 			MI, \
 			CONCAT(CONCAT(ARM_OP_GROUP_ComplexRotationOp, Angle), \
 			       Remainder), \
-			OpNo, Angle, Remainder); \
+			OpNo, (uint64_t)Angle, (uint64_t)Remainder); \
 		unsigned Val = \
 			MCOperand_getImm(MCInst_getOperand(MI, (OpNo))); \
 		SStream_concat(O, "#%d", (Val * Angle) + Remainder); \

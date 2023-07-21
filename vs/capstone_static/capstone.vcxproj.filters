@@ -1,0 +1,277 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Source Files\main">
+      <UniqueIdentifier>{f3fc35aa-be3f-4e6b-9ce1-35cc4b9d9d4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\x86">
+      <UniqueIdentifier>{9a5372b7-9767-4901-8ea0-76a1adcb7025}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\main">
+      <UniqueIdentifier>{475eafed-39b6-4048-af8f-ee4691b3df58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\x86">
+      <UniqueIdentifier>{4ac65589-4159-4918-96a2-04cf003704b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Include">
+      <UniqueIdentifier>{b093d3fd-ff57-4189-8102-22998c165d54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\x86\codegen">
+      <UniqueIdentifier>{8e04fdff-630f-42f0-b4d3-b1009ee4151f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\cs.c">
+      <Filter>Source Files\main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Mapping.c">
+      <Filter>Source Files\main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\MCInst.c">
+      <Filter>Source Files\main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\MCInstPrinter.c">
+      <Filter>Source Files\main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\MCInstrDesc.c">
+      <Filter>Source Files\main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\MCRegisterInfo.c">
+      <Filter>Source Files\main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SStream.c">
+      <Filter>Source Files\main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\utils.c">
+      <Filter>Source Files\main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\arch\X86\X86ATTInstPrinter.c">
+      <Filter>Source Files\x86</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\arch\X86\X86Disassembler.c">
+      <Filter>Source Files\x86</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\arch\X86\X86DisassemblerDecoder.c">
+      <Filter>Source Files\x86</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\arch\X86\X86InstPrinterCommon.c">
+      <Filter>Source Files\x86</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\arch\X86\X86IntelInstPrinter.c">
+      <Filter>Source Files\x86</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\arch\X86\X86Mapping.c">
+      <Filter>Source Files\x86</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\arch\X86\X86Module.c">
+      <Filter>Source Files\x86</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\cs_operand.h">
+      <Filter>Header Files\main</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\cs_priv.h">
+      <Filter>Header Files\main</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\cs_simple_types.h">
+      <Filter>Header Files\main</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LEB128.h">
+      <Filter>Header Files\main</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Mapping.h">
+      <Filter>Header Files\main</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\MathExtras.h">
+      <Filter>Header Files\main</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\MCDisassembler.h">
+      <Filter>Header Files\main</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\MCFixedLenDisassembler.h">
+      <Filter>Header Files\main</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\MCInst.h">
+      <Filter>Header Files\main</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\MCInstPrinter.h">
+      <Filter>Header Files\main</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\MCInstrDesc.h">
+      <Filter>Header Files\main</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\MCRegisterInfo.h">
+      <Filter>Header Files\main</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SStream.h">
+      <Filter>Header Files\main</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\utils.h">
+      <Filter>Header Files\main</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\capstone\arm.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\capstone\arm64.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\capstone\bpf.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\capstone\capstone.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\capstone\evm.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\capstone\m68k.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\capstone\m680x.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\capstone\mips.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\capstone\mos65xx.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\capstone\platform.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\capstone\ppc.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\capstone\riscv.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\capstone\sh.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\capstone\sparc.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\capstone\systemz.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\capstone\tms320c64x.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\capstone\tricore.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\capstone\wasm.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\capstone\x86.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\capstone\xcore.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\arch\X86\X86BaseInfo.h">
+      <Filter>Header Files\x86</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\arch\X86\X86Disassembler.h">
+      <Filter>Header Files\x86</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\arch\X86\X86DisassemblerDecoder.h">
+      <Filter>Header Files\x86</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\arch\X86\X86DisassemblerDecoderCommon.h">
+      <Filter>Header Files\x86</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\arch\X86\X86InstPrinter.h">
+      <Filter>Header Files\x86</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\arch\X86\X86Mapping.h">
+      <Filter>Header Files\x86</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\arch\X86\X86InstPrinterCommon.h">
+      <Filter>Header Files\x86</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\arch\X86\X86Module.h">
+      <Filter>Header Files\x86</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\arch\X86\X86GenAsmWriter.inc">
+      <Filter>Header Files\x86\codegen</Filter>
+    </None>
+    <None Include="..\..\arch\X86\X86GenAsmWriter_reduce.inc">
+      <Filter>Header Files\x86\codegen</Filter>
+    </None>
+    <None Include="..\..\arch\X86\X86GenAsmWriter1.inc">
+      <Filter>Header Files\x86\codegen</Filter>
+    </None>
+    <None Include="..\..\arch\X86\X86GenAsmWriter1_reduce.inc">
+      <Filter>Header Files\x86\codegen</Filter>
+    </None>
+    <None Include="..\..\arch\X86\X86GenDisassemblerTables.inc">
+      <Filter>Header Files\x86\codegen</Filter>
+    </None>
+    <None Include="..\..\arch\X86\X86GenDisassemblerTables_reduce.inc">
+      <Filter>Header Files\x86\codegen</Filter>
+    </None>
+    <None Include="..\..\arch\X86\X86GenDisassemblerTables_reduce2.inc">
+      <Filter>Header Files\x86\codegen</Filter>
+    </None>
+    <None Include="..\..\arch\X86\X86GenDisassemblerTables2.inc">
+      <Filter>Header Files\x86\codegen</Filter>
+    </None>
+    <None Include="..\..\arch\X86\X86GenInstrInfo.inc">
+      <Filter>Header Files\x86\codegen</Filter>
+    </None>
+    <None Include="..\..\arch\X86\X86GenInstrInfo_reduce.inc">
+      <Filter>Header Files\x86\codegen</Filter>
+    </None>
+    <None Include="..\..\arch\X86\X86GenRegisterInfo.inc">
+      <Filter>Header Files\x86\codegen</Filter>
+    </None>
+    <None Include="..\..\arch\X86\X86GenRegisterName.inc">
+      <Filter>Header Files\x86\codegen</Filter>
+    </None>
+    <None Include="..\..\arch\X86\X86GenRegisterName1.inc">
+      <Filter>Header Files\x86\codegen</Filter>
+    </None>
+    <None Include="..\..\arch\X86\X86ImmSize.inc">
+      <Filter>Header Files\x86\codegen</Filter>
+    </None>
+    <None Include="..\..\arch\X86\X86Lookup16.inc">
+      <Filter>Header Files\x86\codegen</Filter>
+    </None>
+    <None Include="..\..\arch\X86\X86Lookup16_reduce.inc">
+      <Filter>Header Files\x86\codegen</Filter>
+    </None>
+    <None Include="..\..\arch\X86\X86MappingInsn.inc">
+      <Filter>Header Files\x86\codegen</Filter>
+    </None>
+    <None Include="..\..\arch\X86\X86MappingInsn_reduce.inc">
+      <Filter>Header Files\x86\codegen</Filter>
+    </None>
+    <None Include="..\..\arch\X86\X86MappingInsnName.inc">
+      <Filter>Header Files\x86\codegen</Filter>
+    </None>
+    <None Include="..\..\arch\X86\X86MappingInsnName_reduce.inc">
+      <Filter>Header Files\x86\codegen</Filter>
+    </None>
+    <None Include="..\..\arch\X86\X86MappingInsnOp.inc">
+      <Filter>Header Files\x86\codegen</Filter>
+    </None>
+    <None Include="..\..\arch\X86\X86MappingInsnOp_reduce.inc">
+      <Filter>Header Files\x86\codegen</Filter>
+    </None>
+    <None Include="..\..\arch\X86\X86MappingReg.inc">
+      <Filter>Header Files\x86\codegen</Filter>
+    </None>
+  </ItemGroup>
+</Project>

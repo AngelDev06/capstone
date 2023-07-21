@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\arch\X86\X86ATTInstPrinter.c" />
+    <ClCompile Include="..\..\arch\X86\X86Disassembler.c" />
+    <ClCompile Include="..\..\arch\X86\X86DisassemblerDecoder.c" />
+    <ClCompile Include="..\..\arch\X86\X86InstPrinterCommon.c" />
+    <ClCompile Include="..\..\arch\X86\X86IntelInstPrinter.c" />
+    <ClCompile Include="..\..\arch\X86\X86Mapping.c" />
+    <ClCompile Include="..\..\arch\X86\X86Module.c" />
+    <ClCompile Include="..\..\cs.c" />
+    <ClCompile Include="..\..\Mapping.c" />
+    <ClCompile Include="..\..\MCInst.c" />
+    <ClCompile Include="..\..\MCInstPrinter.c" />
+    <ClCompile Include="..\..\MCInstrDesc.c" />
+    <ClCompile Include="..\..\MCRegisterInfo.c" />
+    <ClCompile Include="..\..\SStream.c" />
+    <ClCompile Include="..\..\utils.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\arch\X86\X86BaseInfo.h" />
+    <ClInclude Include="..\..\arch\X86\X86Disassembler.h" />
+    <ClInclude Include="..\..\arch\X86\X86DisassemblerDecoder.h" />
+    <ClInclude Include="..\..\arch\X86\X86DisassemblerDecoderCommon.h" />
+    <ClInclude Include="..\..\arch\X86\X86InstPrinter.h" />
+    <ClInclude Include="..\..\arch\X86\X86InstPrinterCommon.h" />
+    <ClInclude Include="..\..\arch\X86\X86Mapping.h" />
+    <ClInclude Include="..\..\arch\X86\X86Module.h" />
+    <ClInclude Include="..\..\cs_operand.h" />
+    <ClInclude Include="..\..\cs_priv.h" />
+    <ClInclude Include="..\..\cs_simple_types.h" />
+    <ClInclude Include="..\..\include\capstone\arm.h" />
+    <ClInclude Include="..\..\include\capstone\arm64.h" />
+    <ClInclude Include="..\..\include\capstone\bpf.h" />
+    <ClInclude Include="..\..\include\capstone\capstone.h" />
+    <ClInclude Include="..\..\include\capstone\evm.h" />
+    <ClInclude Include="..\..\include\capstone\m680x.h" />
+    <ClInclude Include="..\..\include\capstone\m68k.h" />
+    <ClInclude Include="..\..\include\capstone\mips.h" />
+    <ClInclude Include="..\..\include\capstone\mos65xx.h" />
+    <ClInclude Include="..\..\include\capstone\platform.h" />
+    <ClInclude Include="..\..\include\capstone\ppc.h" />
+    <ClInclude Include="..\..\include\capstone\riscv.h" />
+    <ClInclude Include="..\..\include\capstone\sh.h" />
+    <ClInclude Include="..\..\include\capstone\sparc.h" />
+    <ClInclude Include="..\..\include\capstone\systemz.h" />
+    <ClInclude Include="..\..\include\capstone\tms320c64x.h" />
+    <ClInclude Include="..\..\include\capstone\tricore.h" />
+    <ClInclude Include="..\..\include\capstone\wasm.h" />
+    <ClInclude Include="..\..\include\capstone\x86.h" />
+    <ClInclude Include="..\..\include\capstone\xcore.h" />
+    <ClInclude Include="..\..\LEB128.h" />
+    <ClInclude Include="..\..\Mapping.h" />
+    <ClInclude Include="..\..\MathExtras.h" />
+    <ClInclude Include="..\..\MCDisassembler.h" />
+    <ClInclude Include="..\..\MCFixedLenDisassembler.h" />
+    <ClInclude Include="..\..\MCInst.h" />
+    <ClInclude Include="..\..\MCInstPrinter.h" />
+    <ClInclude Include="..\..\MCInstrDesc.h" />
+    <ClInclude Include="..\..\MCRegisterInfo.h" />
+    <ClInclude Include="..\..\SStream.h" />
+    <ClInclude Include="..\..\utils.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\arch\X86\X86GenAsmWriter.inc" />
+    <None Include="..\..\arch\X86\X86GenAsmWriter1.inc" />
+    <None Include="..\..\arch\X86\X86GenAsmWriter1_reduce.inc" />
+    <None Include="..\..\arch\X86\X86GenAsmWriter_reduce.inc" />
+    <None Include="..\..\arch\X86\X86GenDisassemblerTables.inc" />
+    <None Include="..\..\arch\X86\X86GenDisassemblerTables2.inc" />
+    <None Include="..\..\arch\X86\X86GenDisassemblerTables_reduce.inc" />
+    <None Include="..\..\arch\X86\X86GenDisassemblerTables_reduce2.inc" />
+    <None Include="..\..\arch\X86\X86GenInstrInfo.inc" />
+    <None Include="..\..\arch\X86\X86GenInstrInfo_reduce.inc" />
+    <None Include="..\..\arch\X86\X86GenRegisterInfo.inc" />
+    <None Include="..\..\arch\X86\X86GenRegisterName.inc" />
+    <None Include="..\..\arch\X86\X86GenRegisterName1.inc" />
+    <None Include="..\..\arch\X86\X86ImmSize.inc" />
+    <None Include="..\..\arch\X86\X86Lookup16.inc" />
+    <None Include="..\..\arch\X86\X86Lookup16_reduce.inc" />
+    <None Include="..\..\arch\X86\X86MappingInsn.inc" />
+    <None Include="..\..\arch\X86\X86MappingInsnName.inc" />
+    <None Include="..\..\arch\X86\X86MappingInsnName_reduce.inc" />
+    <None Include="..\..\arch\X86\X86MappingInsnOp.inc" />
+    <None Include="..\..\arch\X86\X86MappingInsnOp_reduce.inc" />
+    <None Include="..\..\arch\X86\X86MappingInsn_reduce.inc" />
+    <None Include="..\..\arch\X86\X86MappingReg.inc" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{0418da81-a05d-4eaf-8f54-e1b692522aa9}</ProjectGuid>
+    <RootNamespace>capstone</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(ProjectDir)..\..\bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)..\..\build\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(ProjectDir)..\..\bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)..\..\build\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(ProjectDir)..\..\bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)..\..\build\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(ProjectDir)..\..\bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)..\..\build\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions);CAPSTONE_HAS_X86;CAPSTONE_USE_SYS_DYN_MEM</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4146;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <SubSystem>
+      </SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions);CAPSTONE_HAS_X86;CAPSTONE_USE_SYS_DYN_MEM</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4146;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <SubSystem>
+      </SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions);CAPSTONE_HAS_X86;CAPSTONE_USE_SYS_DYN_MEM</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4146;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <SubSystem>
+      </SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions);CAPSTONE_HAS_X86;CAPSTONE_USE_SYS_DYN_MEM</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4146;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <SubSystem>
+      </SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

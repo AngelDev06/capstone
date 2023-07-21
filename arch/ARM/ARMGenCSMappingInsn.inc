@@ -3,8 +3,8 @@
 /*    Rot127 <unisono@quyllur.org> 2022-2023 */
 /* Automatically generated file by Capstone's LLVM TableGen Disassembler Backend. */
 
-/* LLVM-commit: 7cbf1a259152 */
-/* LLVM-tag: llvmorg-16.0.6 */
+/* LLVM-commit: <commit> */
+/* LLVM-tag: <tag> */
 
 /* Do not edit. */
 
@@ -5531,7 +5531,7 @@
   /* bx${p}	lr */
   ARM_BX_RET /* 747 */, ARM_INS_BX,
   #ifndef CAPSTONE_DIET
-    { 0 }, { 0 }, { ARM_FEATURE_IsARM, ARM_FEATURE_HasV4T, 0 }, 0, 0, {{ 0 }},
+    { 0 }, { 0 }, { ARM_GRP_JUMP, ARM_GRP_RET, ARM_FEATURE_IsARM, ARM_FEATURE_HasV4T, 0 }, 1, 0, {{ 0 }},
     { 126877512, { 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 }, 28 }
   #endif
 },
@@ -6019,7 +6019,7 @@
   /* eret${p} */
   ARM_ERET /* 808 */, ARM_INS_ERET,
   #ifndef CAPSTONE_DIET
-    { 0 }, { ARM_REG_PC, 0 }, { ARM_FEATURE_IsARM, ARM_FEATURE_HasVirtualization, 0 }, 0, 0, {{ 0 }},
+    { 0 }, { ARM_REG_PC, 0 }, { ARM_GRP_JUMP, ARM_GRP_RET, ARM_FEATURE_IsARM, ARM_FEATURE_HasVirtualization, 0 }, 1, 0, {{ 0 }},
     { 123732072, { 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 }, 28 }
   #endif
 },
@@ -6746,7 +6746,7 @@
   /* mov${p}	pc, lr */
   ARM_MOVPCLR /* 899 */, ARM_INS_MOV,
   #ifndef CAPSTONE_DIET
-    { 0 }, { 0 }, { ARM_FEATURE_IsARM, 0 }, 0, 0, {{ 0 }},
+    { 0 }, { 0 }, { ARM_GRP_JUMP, ARM_GRP_RET, ARM_FEATURE_IsARM, 0 }, 1, 0, {{ 0 }},
     { 117502040, { 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 }, 28 }
   #endif
 },
@@ -31617,7 +31617,7 @@
   ARM_t2LDRBpci /* 4045 */, ARM_INS_LDRB,
   #ifndef CAPSTONE_DIET
     { 0 }, { 0 }, { ARM_FEATURE_IsThumb2, 0 }, 0, 0, {{ 0 }},
-    { 31775, { 0, 1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 13, 14, 15 }, 15 }
+    { 1055, { 0, 1, 2, 3, 4, 5, 6, 7, 9, 10, 11 }, 11 }
   #endif
 },
 {
@@ -31729,7 +31729,7 @@
   ARM_t2LDRHpci /* 4059 */, ARM_INS_LDRH,
   #ifndef CAPSTONE_DIET
     { 0 }, { 0 }, { ARM_FEATURE_IsThumb2, 0 }, 0, 0, {{ 0 }},
-    { 32287, { 0, 1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 13, 14, 15 }, 15 }
+    { 1567, { 0, 1, 2, 3, 4, 5, 6, 7, 9, 10, 11 }, 11 }
   #endif
 },
 {
@@ -31785,7 +31785,7 @@
   ARM_t2LDRSBpci /* 4066 */, ARM_INS_LDRSB,
   #ifndef CAPSTONE_DIET
     { 0 }, { 0 }, { ARM_FEATURE_IsThumb2, 0 }, 0, 0, {{ 0 }},
-    { 31903, { 0, 1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 13, 14, 15 }, 15 }
+    { 1183, { 0, 1, 2, 3, 4, 5, 6, 7, 9, 10, 11 }, 11 }
   #endif
 },
 {
@@ -31841,7 +31841,7 @@
   ARM_t2LDRSHpci /* 4073 */, ARM_INS_LDRSH,
   #ifndef CAPSTONE_DIET
     { 0 }, { 0 }, { ARM_FEATURE_IsThumb2, 0 }, 0, 0, {{ 0 }},
-    { 32415, { 0, 1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 13, 14, 15 }, 15 }
+    { 1695, { 0, 1, 2, 3, 4, 5, 6, 7, 9, 10, 11 }, 11 }
   #endif
 },
 {
@@ -31897,7 +31897,7 @@
   ARM_t2LDRpci /* 4080 */, ARM_INS_LDR,
   #ifndef CAPSTONE_DIET
     { 0 }, { 0 }, { ARM_FEATURE_IsThumb2, 0 }, 0, 0, {{ 0 }},
-    { 32031, { 0, 1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 13, 14, 15 }, 15 }
+    { 1311, { 0, 1, 2, 3, 4, 5, 6, 7, 9, 10, 11 }, 11 }
   #endif
 },
 {
@@ -32303,7 +32303,7 @@
   ARM_t2PLDpci /* 4131 */, ARM_INS_PLD,
   #ifndef CAPSTONE_DIET
     { 0 }, { 0 }, { ARM_FEATURE_IsThumb2, 0 }, 0, 0, {{ 0 }},
-    { 523295, { 0, 1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 }, 19 }
+    { 31775, { 0, 1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 16, 17, 18, 19 }, 15 }
   #endif
 },
 {
@@ -32335,7 +32335,7 @@
   ARM_t2PLIpci /* 4135 */, ARM_INS_PLI,
   #ifndef CAPSTONE_DIET
     { 0 }, { 0 }, { ARM_FEATURE_IsThumb2, ARM_FEATURE_HasV7, 0 }, 0, 0, {{ 0 }},
-    { 523423, { 0, 1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 }, 19 }
+    { 31903, { 0, 1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 16, 17, 18, 19 }, 15 }
   #endif
 },
 {
@@ -32462,7 +32462,7 @@
   /* rfedb${p}	$Rn */
   ARM_t2RFEDB /* 4151 */, ARM_INS_RFEDB,
   #ifndef CAPSTONE_DIET
-    { 0 }, { ARM_REG_PC, 0 }, { ARM_FEATURE_IsThumb2, ARM_FEATURE_IsNotMClass, 0 }, 0, 0, {{ 0 }},
+    { 0 }, { ARM_REG_PC, 0 }, { ARM_GRP_JUMP, ARM_GRP_RET, ARM_FEATURE_IsThumb2, ARM_FEATURE_IsNotMClass, 0 }, 1, 0, {{ 0 }},
     { 14359, { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 }, 28 }
   #endif
 },
@@ -32470,7 +32470,7 @@
   /* rfedb${p}	$Rn! */
   ARM_t2RFEDBW /* 4152 */, ARM_INS_RFEDB,
   #ifndef CAPSTONE_DIET
-    { 0 }, { ARM_REG_PC, 0 }, { ARM_FEATURE_IsThumb2, ARM_FEATURE_IsNotMClass, 0 }, 0, 0, {{ 0 }},
+    { 0 }, { ARM_REG_PC, 0 }, { ARM_GRP_JUMP, ARM_GRP_RET, ARM_FEATURE_IsThumb2, ARM_FEATURE_IsNotMClass, 0 }, 1, 0, {{ 0 }},
     { 15383, { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 }, 28 }
   #endif
 },
@@ -32478,7 +32478,7 @@
   /* rfeia${p}	$Rn */
   ARM_t2RFEIA /* 4153 */, ARM_INS_RFEIA,
   #ifndef CAPSTONE_DIET
-    { 0 }, { ARM_REG_PC, 0 }, { ARM_FEATURE_IsThumb2, ARM_FEATURE_IsNotMClass, 0 }, 0, 0, {{ 0 }},
+    { 0 }, { ARM_REG_PC, 0 }, { ARM_GRP_JUMP, ARM_GRP_RET, ARM_FEATURE_IsThumb2, ARM_FEATURE_IsNotMClass, 0 }, 1, 0, {{ 0 }},
     { 14743, { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 }, 28 }
   #endif
 },
@@ -32486,7 +32486,7 @@
   /* rfeia${p}	$Rn! */
   ARM_t2RFEIAW /* 4154 */, ARM_INS_RFEIA,
   #ifndef CAPSTONE_DIET
-    { 0 }, { ARM_REG_PC, 0 }, { ARM_FEATURE_IsThumb2, ARM_FEATURE_IsNotMClass, 0 }, 0, 0, {{ 0 }},
+    { 0 }, { ARM_REG_PC, 0 }, { ARM_GRP_JUMP, ARM_GRP_RET, ARM_FEATURE_IsThumb2, ARM_FEATURE_IsNotMClass, 0 }, 1, 0, {{ 0 }},
     { 15767, { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 }, 28 }
   #endif
 },
@@ -33470,7 +33470,7 @@
   /* subs${p}	pc, lr, $imm */
   ARM_t2SUBS_PC_LR /* 4277 */, ARM_INS_SUBS,
   #ifndef CAPSTONE_DIET
-    { 0 }, { ARM_REG_PC, 0 }, { ARM_FEATURE_IsThumb2, ARM_FEATURE_IsNotMClass, 0 }, 0, 0, {{ 0 }},
+    { 0 }, { ARM_REG_PC, 0 }, { ARM_GRP_JUMP, ARM_GRP_RET, ARM_FEATURE_IsThumb2, ARM_FEATURE_IsNotMClass, 0 }, 1, 0, {{ 0 }},
     { 15825871, { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23 }, 24 }
   #endif
 },

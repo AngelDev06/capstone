@@ -7,8 +7,8 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "capstone/arm.h"
 #include "capstone/capstone.h"
+#include "capstone/arm.h"
 
 #include "../../Mapping.h"
 #include "../../MCDisassembler.h"
@@ -524,32 +524,17 @@ static void ARM_add_reglist_reg_encoding(MCInst *MI, arm_reg reg)
 	encoding->operand_pieces_count = 1;
 	encoding->sizes[0] = 1;
 	unsigned Opcode = MCInst_getOpcode(MI);
-	// if it's r0-r13 we subtract 73 to get the respective bit num (for example r1 == 1)
-	// otherwise if it's lr or pc we add 1 for the same reason as above
-	unsigned RegBitNum = reg >= 73 ? reg - 73 : reg + 1;
-
-	switch (Opcode) {
-	case ARM_tLDMIA:
-	case ARM_tLDMIA_UPD:
-	case ARM_tSTMIA_UPD:
-		encoding->indexes[0] = 15 - RegBitNum;
-		break;
-	case ARM_tPOP:
-		if (RegBitNum == 15) {
-			encoding->indexes[0] = 7;
-			return;
-		}
-		encoding->indexes[0] = 15 - RegBitNum;
-		return;
-	case ARM_tPUSH:
-		if (RegBitNum == 14) {
-			encoding->indexes[0] = 7;
-			return;
-		}
-		encoding->indexes[0] = 15 - RegBitNum;
-		return;
-	}
-	encoding->indexes[0] = 31 - RegBitNum;
+	// Since r0-r12 are placed next to each other on the arm_reg enum we subtract
+	// value of r0 to get the respective bit num of the register.
+	// lr, pc and sp are exceptions
+	unsigned RegBitNum = reg == ARM_REG_R13 ? 13 :
+			     reg >= ARM_REG_R0	? reg - ARM_REG_R0 :
+						  reg + 1;
+	if ((Opcode == ARM_tPOP && RegBitNum == 15) ||
+	    (Opcode == ARM_tPUSH && RegBitNum == 14))
+		encoding->indexes[0] = 8;
+	else
+		encoding->indexes[0] = RegBitNum;
 }
 
 /// Unfortunately there is currently no way to easily extract
@@ -1077,8 +1062,9 @@ static void add_cs_detail_general(MCInst *MI, arm_op_group op_group,
 
 		// Adding the operand that might be missing, if not missing this whole
 		// thing will be overriden anyways
-		cs_operand_encoding *encoding = &ARM_get_detail_op(MI, 0)->encoding;
-		encoding->indexes[encoding->operand_pieces_count] = 28;
+		cs_operand_encoding *encoding =
+			&ARM_get_detail_op(MI, 0)->encoding;
+		encoding->indexes[encoding->operand_pieces_count] = 0;
 		encoding->sizes[encoding->operand_pieces_count++] = 4;
 		ARM_get_detail_op(MI, 0)->mem.format = ARM_MEM_REG_ALIGN_REG;
 		ARM_set_mem_access(MI, false);
@@ -1088,14 +1074,16 @@ static void add_cs_detail_general(MCInst *MI, arm_op_group op_group,
 		arm_reg reg = MCInst_getOpVal(MI, OpNum);
 		if (reg != 0) {
 			ARM_set_detail_op_mem_offset(MI, OpNum, reg, false,
-										 ARM_MEM_REG_ALIGN_REG);
+						     ARM_MEM_REG_ALIGN_REG);
 		}
 		// Align & index register are treated as one due to an issue with the
 		// .td files so this should fix it
-		cs_operand_encoding *encoding = &ARM_get_detail_op(MI, -1)->encoding;
+		cs_operand_encoding *encoding =
+			&ARM_get_detail_op(MI, -1)->encoding;
 		if (encoding->sizes[encoding->operand_pieces_count - 1] != 4) {
-			encoding->sizes[encoding->operand_pieces_count - 1] -= 4;
-			encoding->indexes[encoding->operand_pieces_count] = 28;
+			encoding->sizes[encoding->operand_pieces_count - 1] -=
+				4;
+			encoding->indexes[encoding->operand_pieces_count] = 0;
 			encoding->sizes[encoding->operand_pieces_count++] = 4;
 		}
 		break;
@@ -1197,8 +1185,10 @@ static void add_cs_detail_general(MCInst *MI, arm_op_group op_group,
 		// But the MappingInsnOps.inc has only a single entry for the whole
 		// list. So all registers in the list share those attributes.
 		unsigned access = map_get_op_access(MI, OpNum);
-		for (unsigned i = OpNum, e = MCInst_getNumOperands(MI); i != e; ++i) {
-			unsigned Reg = MCOperand_getReg(MCInst_getOperand(MI, i));
+		for (unsigned i = OpNum, e = MCInst_getNumOperands(MI); i != e;
+		     ++i) {
+			unsigned Reg =
+				MCOperand_getReg(MCInst_getOperand(MI, i));
 
 			ARM_get_detail_op(MI, 0)->type = ARM_OP_REG;
 			ARM_get_detail_op(MI, 0)->reg = Reg;
@@ -1253,7 +1243,6 @@ static void add_cs_detail_general(MCInst *MI, arm_op_group op_group,
 		MCOperand *Op = MCInst_getOperand(MI, OpNum);
 		unsigned SpecRegRBit = (unsigned)MCOperand_getImm(Op) >> 4;
 		unsigned Mask = (unsigned)MCOperand_getImm(Op) & 0xf;
-		bool IsOutReg = OpNum == 0;
 
 		if (ARM_getFeatureBits(MI->csh->mode, ARM_FeatureMClass)) {
 			const ARMSysReg_MClassSysReg *TheReg;
@@ -1269,9 +1258,9 @@ static void add_cs_detail_general(MCInst *MI, arm_op_group op_group,
 				if (TheReg && MClassSysReg_isInRequiredFeatures(
 						      TheReg, ARM_FeatureDSP)) {
 					ARM_set_detail_op_sysop(
-						MI, TheReg->sysreg.mclasssysreg,
-						ARM_OP_SYSREG, IsOutReg, Mask,
-						SYSm);
+						MI, OpNum,
+						TheReg->sysreg.mclasssysreg,
+						ARM_OP_SYSREG, Mask, SYSm);
 					return;
 				}
 			}
@@ -1284,9 +1273,9 @@ static void add_cs_detail_general(MCInst *MI, arm_op_group op_group,
 						SYSm);
 				if (TheReg) {
 					ARM_set_detail_op_sysop(
-						MI, TheReg->sysreg.mclasssysreg,
-						ARM_OP_SYSREG, IsOutReg, Mask,
-						SYSm);
+						MI, OpNum,
+						TheReg->sysreg.mclasssysreg,
+						ARM_OP_SYSREG, Mask, SYSm);
 					return;
 				}
 			}
@@ -1295,16 +1284,16 @@ static void add_cs_detail_general(MCInst *MI, arm_op_group op_group,
 				SYSm);
 			if (TheReg) {
 				ARM_set_detail_op_sysop(
-					MI, TheReg->sysreg.mclasssysreg,
-					ARM_OP_SYSREG, IsOutReg, Mask, SYSm);
+					MI, OpNum, TheReg->sysreg.mclasssysreg,
+					ARM_OP_SYSREG, Mask, SYSm);
 				return;
 			}
 
 			if (detail_is_set(MI))
 				MCOperand_CreateImm0(MI, SYSm);
 
-			ARM_set_detail_op_sysop(MI, SYSm, ARM_OP_SYSREG,
-						IsOutReg, Mask, SYSm);
+			ARM_set_detail_op_sysop(MI, OpNum, SYSm, ARM_OP_SYSREG,
+						Mask, SYSm);
 
 			return;
 		}
@@ -1314,22 +1303,20 @@ static void add_cs_detail_general(MCInst *MI, arm_op_group op_group,
 			default:
 				assert(0 && "Unexpected mask value!");
 			case 4:
-				ARM_set_detail_op_sysop(MI,
+				ARM_set_detail_op_sysop(MI, OpNum,
 							ARM_MCLASSSYSREG_APSR_G,
-							ARM_OP_SYSREG, IsOutReg,
-							Mask, UINT16_MAX);
+							ARM_OP_SYSREG, Mask,
+							UINT16_MAX);
 				return;
 			case 8:
 				ARM_set_detail_op_sysop(
-					MI, ARM_MCLASSSYSREG_APSR_NZCVQ,
-					ARM_OP_SYSREG, IsOutReg, Mask,
-					UINT16_MAX);
+					MI, OpNum, ARM_MCLASSSYSREG_APSR_NZCVQ,
+					ARM_OP_SYSREG, Mask, UINT16_MAX);
 				return;
 			case 12:
 				ARM_set_detail_op_sysop(
-					MI, ARM_MCLASSSYSREG_APSR_NZCVQG,
-					ARM_OP_SYSREG, IsOutReg, Mask,
-					UINT16_MAX);
+					MI, OpNum, ARM_MCLASSSYSREG_APSR_NZCVQG,
+					ARM_OP_SYSREG, Mask, UINT16_MAX);
 				return;
 			}
 		}
@@ -1349,10 +1336,10 @@ static void add_cs_detail_general(MCInst *MI, arm_op_group op_group,
 				field += SpecRegRBit ? ARM_FIELD_SPSR_C :
 						       ARM_FIELD_CPSR_C;
 
-			ARM_set_detail_op_sysop(MI, field,
+			ARM_set_detail_op_sysop(MI, OpNum, field,
 						SpecRegRBit ? ARM_OP_SPSR :
 							      ARM_OP_CPSR,
-						IsOutReg, Mask, UINT16_MAX);
+						Mask, UINT16_MAX);
 		}
 		break;
 	}
@@ -1425,8 +1412,9 @@ static void add_cs_detail_general(MCInst *MI, arm_op_group op_group,
 		break;
 	case ARM_OP_GROUP_PostIdxRegOperand: {
 		bool sub = MCInst_getOpVal(MI, OpNum + 1) ? false : true;
-		ARM_set_detail_op_mem_offset(MI, OpNum, MCInst_getOpVal(MI, OpNum), sub,
-									 ARM_MEM_U_REG_REG);
+		ARM_set_detail_op_mem_offset(MI, OpNum,
+					     MCInst_getOpVal(MI, OpNum), sub,
+					     ARM_MEM_U_REG_REG);
 		ARM_get_detail(MI)->post_index = true;
 		break;
 	}
@@ -1434,7 +1422,7 @@ static void add_cs_detail_general(MCInst *MI, arm_op_group op_group,
 		unsigned Imm = MCInst_getOpVal(MI, OpNum);
 		bool sub = !(Imm & 256);
 		ARM_set_detail_op_mem_offset(MI, OpNum, (Imm & 0xff), sub,
-									 ARM_MEM_U_REG_IMM2);
+					     ARM_MEM_U_REG_IMM2);
 		ARM_get_detail(MI)->post_index = true;
 		break;
 	}
@@ -1442,7 +1430,7 @@ static void add_cs_detail_general(MCInst *MI, arm_op_group op_group,
 		unsigned Imm = MCInst_getOpVal(MI, OpNum);
 		bool sub = !(Imm & 256);
 		ARM_set_detail_op_mem_offset(MI, OpNum, (Imm & 0xff) << 2, sub,
-									 ARM_MEM_U_REG_IMM);
+					     ARM_MEM_U_REG_IMM);
 		ARM_get_detail(MI)->post_index = true;
 		break;
 	}
@@ -1452,7 +1440,7 @@ static void add_cs_detail_general(MCInst *MI, arm_op_group op_group,
 		ARM_set_detail_op_mem(MI, OpNum, false, 0, 0,
 				      MCInst_getOpVal(MI, OpNum));
 		ARM_set_detail_op_mem(MI, OpNum + 1, true, 0, 0,
-							  MCInst_getOpVal(MI, OpNum + 1));
+				      MCInst_getOpVal(MI, OpNum + 1));
 		ARM_get_detail_op(MI, 0)->mem.format = ARM_MEM_REG_REG;
 		if (op_group == ARM_OP_GROUP_AddrModeTBH) {
 			ARM_get_detail_op(MI, 0)->shift.type = ARM_SFT_LSL;
@@ -1469,7 +1457,7 @@ static void add_cs_detail_general(MCInst *MI, arm_op_group op_group,
 
 		ARM_set_mem_access(MI, true);
 		ARM_set_detail_op_mem(MI, OpNum, false, 0, 0,
-							  MCInst_getOpVal(MI, OpNum));
+				      MCInst_getOpVal(MI, OpNum));
 		ARM_get_detail_op(MI, 0)->mem.format = ARM_MEM_U_REG_SHIFT_REG;
 		unsigned int imm3 = MCInst_getOpVal(MI, OpNum + 2);
 		unsigned ShOff = ARM_AM_getAM2Offset(imm3);
@@ -1497,20 +1485,24 @@ static void add_cs_detail_general(MCInst *MI, arm_op_group op_group,
 		ARM_AM_AddrOpc subtracted = ARM_AM_getAM2Op(imm2);
 		arm_mem_format format;
 		if (!MCInst_getOpVal(MI, OpNum)) {
-			format = (map_get_op_type(MI, OpNum + 1) & ~CS_OP_MEM) == CS_OP_REG
-						 ? ARM_MEM_U_REG_SHIFT_REG
-						 : ARM_MEM_U_REG_IMM;
+			format = (map_get_op_type(MI, OpNum + 1) &
+				  ~CS_OP_MEM) == CS_OP_REG ?
+					 ARM_MEM_U_REG_SHIFT_REG :
+					 ARM_MEM_U_REG_IMM;
 			ARM_set_detail_op_mem_offset(MI, OpNum + 1,
-										 ARM_AM_getAM2Offset(imm2),
-										 subtracted == ARM_AM_sub, format);
+						     ARM_AM_getAM2Offset(imm2),
+						     subtracted == ARM_AM_sub,
+						     format);
 			ARM_get_detail(MI)->post_index = true;
 			return;
 		}
-		format = (map_get_op_type(MI, OpNum) & ~CS_OP_MEM) == CS_OP_REG
-					 ? ARM_MEM_U_REG_SHIFT_REG
-					 : ARM_MEM_U_REG_IMM;
-		ARM_set_detail_op_mem_offset(MI, OpNum, MCInst_getOpVal(MI, OpNum),
-									 subtracted == ARM_AM_sub, format);
+		format = (map_get_op_type(MI, OpNum) & ~CS_OP_MEM) ==
+					 CS_OP_REG ?
+				 ARM_MEM_U_REG_SHIFT_REG :
+				 ARM_MEM_U_REG_IMM;
+		ARM_set_detail_op_mem_offset(MI, OpNum,
+					     MCInst_getOpVal(MI, OpNum),
+					     subtracted == ARM_AM_sub, format);
 		ARM_get_detail(MI)->post_index = true;
 		add_cs_detail_RegImmShift(MI, ARM_AM_getAM2ShiftOpc(imm2),
 					  ARM_AM_getAM2Offset(imm2));
@@ -1519,23 +1511,28 @@ static void add_cs_detail_general(MCInst *MI, arm_op_group op_group,
 	case ARM_OP_GROUP_AddrMode3OffsetOperand: {
 		MCOperand *MO1 = MCInst_getOperand(MI, OpNum);
 		MCOperand *MO2 = MCInst_getOperand(MI, OpNum + 1);
-		ARM_AM_AddrOpc subtracted = ARM_AM_getAM3Op(MCOperand_getImm(MO2));
+		ARM_AM_AddrOpc subtracted =
+			ARM_AM_getAM3Op(MCOperand_getImm(MO2));
 		uint8_t offset = 0;
 		if (MCOperand_getReg(MO1))
-			ARM_set_detail_op_mem_offset(MI, OpNum, MCInst_getOpVal(MI, OpNum),
-										 subtracted == ARM_AM_sub, ARM_MEM_NONE);
+			ARM_set_detail_op_mem_offset(MI, OpNum,
+						     MCInst_getOpVal(MI, OpNum),
+						     subtracted == ARM_AM_sub,
+						     ARM_MEM_NONE);
 		else {
 			offset = 1;
 			ARM_set_detail_op_mem_offset(
 				MI, OpNum + 1,
-				ARM_AM_getAM3Offset(MCInst_getOpVal(MI, OpNum + 1)),
+				ARM_AM_getAM3Offset(
+					MCInst_getOpVal(MI, OpNum + 1)),
 				subtracted == ARM_AM_sub, ARM_MEM_NONE);
 		}
 		if (!doing_mem(MI))
 			ARM_dec_op_count(MI);
 		switch (map_get_op_type(MI, OpNum + offset) & ~CS_OP_MEM) {
 		case CS_OP_REG: {
-			cs_operand_encoding *encoding = &ARM_get_detail_op(MI, 0)->encoding;
+			cs_operand_encoding *encoding =
+				&ARM_get_detail_op(MI, 0)->encoding;
 			// Remove the extra operand piece that was mapped (index register
 			// has only one)
 			--(encoding->operand_pieces_count);
@@ -1543,11 +1540,13 @@ static void add_cs_detail_general(MCInst *MI, arm_op_group op_group,
 				encoding->indexes[encoding->operand_pieces_count];
 			encoding->sizes[encoding->operand_pieces_count - 1] =
 				encoding->sizes[encoding->operand_pieces_count];
-			ARM_get_detail_op(MI, 0)->mem.format = ARM_MEM_U_REG_REG;
+			ARM_get_detail_op(MI, 0)->mem.format =
+				ARM_MEM_U_REG_REG;
 			break;
 		}
 		case CS_OP_IMM:
-			ARM_get_detail_op(MI, 0)->mem.format = ARM_MEM_U_REG_IMM2;
+			ARM_get_detail_op(MI, 0)->mem.format =
+				ARM_MEM_U_REG_IMM2;
 			break;
 		}
 		ARM_get_detail(MI)->post_index = true;
@@ -1619,15 +1618,17 @@ static void add_cs_detail_general(MCInst *MI, arm_op_group op_group,
 		// this case then register goes first and U flag follows
 		arm_mem_format format =
 			op_group == ARM_OP_GROUP_T2AddrModeImm8s4OffsetOperand ||
-					get_detail(MI)->groups_count != 1
-				? ARM_MEM_U_REG_IMM
-				: ARM_MEM_REG_U_IMM;
+					get_detail(MI)->groups_count != 1 ?
+				ARM_MEM_U_REG_IMM :
+				ARM_MEM_REG_U_IMM;
 		if (OffImm == INT32_MIN)
-			ARM_set_detail_op_mem_offset(MI, OpNum, 0, false, format);
+			ARM_set_detail_op_mem_offset(MI, OpNum, 0, false,
+						     format);
 		else {
 			bool sub = OffImm < 0;
 			OffImm = OffImm < 0 ? OffImm * -1 : OffImm;
-			ARM_set_detail_op_mem_offset(MI, OpNum, OffImm, sub, format);
+			ARM_set_detail_op_mem_offset(MI, OpNum, OffImm, sub,
+						     format);
 		}
 		ARM_get_detail(MI)->post_index = true;
 		break;
@@ -1639,7 +1640,7 @@ static void add_cs_detail_general(MCInst *MI, arm_op_group op_group,
 		ARM_set_detail_op_mem(MI, OpNum, false, 0, 0,
 				      MCInst_getOpVal(MI, OpNum));
 		ARM_set_detail_op_mem(MI, OpNum + 1, true, 0, 0,
-							  MCInst_getOpVal(MI, OpNum + 1));
+				      MCInst_getOpVal(MI, OpNum + 1));
 		ARM_get_detail_op(MI, 0)->mem.format = ARM_MEM_REG_SHIFT_REG;
 		unsigned ShAmt = MCInst_getOpVal(MI, OpNum + 2);
 		if (ShAmt) {
@@ -1746,7 +1747,8 @@ static void add_cs_detail_general(MCInst *MI, arm_op_group op_group,
 		int32_t OffImm = MCInst_getOpVal(MI, OpNum);
 		if (OffImm == INT32_MIN)
 			OffImm = 0;
-		cs_operand_encoding *encoding = &ARM_get_detail_op(MI, 0)->encoding;
+		cs_operand_encoding *encoding =
+			&ARM_get_detail_op(MI, 0)->encoding;
 		*encoding = map_get_op_encoding(MI, OpNum);
 		ARM_get_detail_op(MI, 0)->type = ARM_OP_MEM;
 		ARM_get_detail_op(MI, 0)->mem.base = ARM_REG_PC;
@@ -1754,7 +1756,8 @@ static void add_cs_detail_general(MCInst *MI, arm_op_group op_group,
 		ARM_get_detail_op(MI, 0)->mem.scale = 1;
 		ARM_get_detail_op(MI, 0)->mem.disp = OffImm;
 		ARM_get_detail_op(MI, 0)->mem.format =
-			encoding->operand_pieces_count == 1 ? ARM_MEM_IMM : ARM_MEM_REG_IMM;
+			encoding->operand_pieces_count == 1 ? ARM_MEM_IMM :
+							      ARM_MEM_U_REG_IMM;
 		ARM_get_detail_op(MI, 0)->access = CS_AC_READ;
 		ARM_inc_op_count(MI);
 		break;
@@ -1763,9 +1766,8 @@ static void add_cs_detail_general(MCInst *MI, arm_op_group op_group,
 		uint32_t Banked = MCInst_getOpVal(MI, OpNum);
 		const ARMBankedReg_BankedReg *TheReg =
 			ARMBankedReg_lookupBankedRegByEncoding(Banked);
-		bool IsOutReg = OpNum == 0;
-		ARM_set_detail_op_sysop(MI, TheReg->sysreg.bankedreg,
-					ARM_OP_BANKEDREG, IsOutReg, UINT8_MAX,
+		ARM_set_detail_op_sysop(MI, OpNum, TheReg->sysreg.bankedreg,
+					ARM_OP_BANKEDREG, UINT8_MAX,
 					TheReg->Encoding &
 						0xf); // Bit[4:0] are SYSm
 		break;
@@ -1779,7 +1781,8 @@ static void add_cs_detail_general(MCInst *MI, arm_op_group op_group,
 			ARM_get_detail_op(MI, 0)->type = ARM_OP_SETEND;
 			ARM_get_detail_op(MI, 0)->setend = ARM_SETEND_LE;
 		}
-		ARM_get_detail_op(MI, 0)->encoding = map_get_op_encoding(MI, OpNum);
+		ARM_get_detail_op(MI, 0)->encoding =
+			map_get_op_encoding(MI, OpNum);
 		ARM_inc_op_count(MI);
 		break;
 	}
@@ -1832,9 +1835,9 @@ static void add_cs_detail_template_1(MCInst *MI, arm_op_group op_group,
 		// first operand is of size greater than 1 then it defenately isn't the
 		// U bit so it starts with the base register, otherwise it's U bit first
 		ARM_get_detail_op(MI, 0)->mem.format =
-			encoding->operand_pieces_count < 3 ? ARM_MEM_REG_IMM
-			: encoding->sizes[0] != 1		   ? ARM_MEM_REG_U_IMM
-											   : ARM_MEM_U_REG_IMM;
+			encoding->operand_pieces_count < 3 ? ARM_MEM_REG_IMM :
+			encoding->sizes[0] != 1		   ? ARM_MEM_REG_U_IMM :
+							     ARM_MEM_U_REG_IMM;
 		ARM_set_mem_access(MI, false);
 		break;
 	}
@@ -1865,14 +1868,19 @@ static void add_cs_detail_template_1(MCInst *MI, arm_op_group op_group,
 
 		if (MCOperand_getReg(MO2)) {
 			ARM_set_detail_op_mem(MI, OpNum + 1, true, 0, 0,
-								  MCInst_getOpVal(MI, OpNum + 1));
-			ARM_get_detail_op(MI, 0)->subtracted = Sign == ARM_AM_sub;
-			cs_operand_encoding *encoding = &ARM_get_detail_op(MI, 0)->encoding;
+					      MCInst_getOpVal(MI, OpNum + 1));
+			ARM_get_detail_op(MI, 0)->subtracted = Sign ==
+							       ARM_AM_sub;
+			cs_operand_encoding *encoding =
+				&ARM_get_detail_op(MI, 0)->encoding;
 			// Since it's a register then it's only in one piece (not two), so
 			// we remove one
+			// clang-format off
 			--(encoding->operand_pieces_count);
-			encoding->indexes[encoding->operand_pieces_count - 1] = 28;
-			ARM_get_detail_op(MI, 0)->mem.format = ARM_MEM_U_REG_REG;
+			encoding->indexes[encoding->operand_pieces_count - 1] = 0;
+			// clang-format on
+			ARM_get_detail_op(MI, 0)->mem.format =
+				ARM_MEM_U_REG_REG;
 			ARM_set_mem_access(MI, false);
 			break;
 		}
@@ -2120,7 +2128,7 @@ void ARM_set_detail_op_imm(MCInst *MI, unsigned OpNum, arm_op_type ImmType,
 
 /// Adds the operand as to the previously added memory operand.
 void ARM_set_detail_op_mem_offset(MCInst *MI, unsigned OpNum, uint64_t Val,
-								  bool subtracted, arm_mem_format Format)
+				  bool subtracted, arm_mem_format Format)
 {
 	assert(map_get_op_type(MI, OpNum) & CS_OP_MEM);
 
@@ -2195,8 +2203,23 @@ void ARM_set_detail_op_mem(MCInst *MI, unsigned OpNum, bool is_index_reg,
 
 	ARM_get_detail_op(MI, 0)->type = ARM_OP_MEM;
 	ARM_get_detail_op(MI, 0)->access = map_get_op_access(MI, OpNum);
-	ARM_get_detail_op(MI, 0)->encoding = map_get_op_encoding(MI, OpNum);
-	
+	cs_operand_encoding *encoding = &ARM_get_detail_op(MI, 0)->encoding;
+	cs_operand_encoding new_encoding = map_get_op_encoding(MI, OpNum);
+
+	// If the operand's encoding already contains some pieces and those pieces aren't
+	// the same as the ones we just looked up then we merge the rest of the encoding.
+	if (encoding->operand_pieces_count &&
+	    encoding->indexes[0] != new_encoding.indexes[0]) {
+		for (uint8_t i = 0; i != new_encoding.operand_pieces_count;
+		     ++i) {
+			encoding->indexes[encoding->operand_pieces_count] =
+				new_encoding.indexes[i];
+			encoding->sizes[encoding->operand_pieces_count++] =
+				new_encoding.sizes[i];
+		}
+		return;
+	}
+	*encoding = new_encoding;
 }
 
 /// Sets the neon_lane in the previous operand to the value of
@@ -2214,9 +2237,10 @@ void ARM_set_detail_op_neon_lane(MCInst *MI, unsigned OpNum)
 /// Adds a System Register and increments op_count by one.
 /// @type ARM_OP_SYSREG, ARM_OP_BANKEDREG, ARM_OP_SYSM...
 /// @p Mask is the MSR mask or UINT8_MAX if not set.
-void ARM_set_detail_op_sysop(MCInst *MI, int Val, arm_op_type type,
-			     bool IsOutReg, uint8_t Mask, uint16_t Sysm)
+void ARM_set_detail_op_sysop(MCInst *MI, unsigned OpNum, int Val,
+			     arm_op_type type, uint8_t Mask, uint16_t Sysm)
 {
+	const bool IsOutReg = OpNum == 0;
 	if (!detail_is_set(MI))
 		return;
 	ARM_get_detail_op(MI, 0)->type = type;
@@ -2239,7 +2263,7 @@ void ARM_set_detail_op_sysop(MCInst *MI, int Val, arm_op_type type,
 	ARM_get_detail_op(MI, 0)->sysop.sysm = Sysm;
 	ARM_get_detail_op(MI, 0)->sysop.msr_mask = Mask;
 	ARM_get_detail_op(MI, 0)->access = IsOutReg ? CS_AC_WRITE : CS_AC_READ;
-  ARM_get_detail_op(MI, 0)->encoding = map_get_op_encoding(MI, OpNum);
+	ARM_get_detail_op(MI, 0)->encoding = map_get_op_encoding(MI, OpNum);
 	ARM_inc_op_count(MI);
 }
 

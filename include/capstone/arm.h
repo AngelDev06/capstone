@@ -13,7 +13,6 @@ extern "C" {
 #include <string.h>
 
 #include "cs_operand.h"
-#include "platform.h"
 
 #ifdef _MSC_VER
 #pragma warning(disable:4201)
