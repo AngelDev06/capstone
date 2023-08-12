@@ -27,15 +27,6 @@
     <Filter Include="Header Files\x86\codegen">
       <UniqueIdentifier>{8e04fdff-630f-42f0-b4d3-b1009ee4151f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\arm">
-      <UniqueIdentifier>{2619fd3b-6709-497c-b4d7-a25e9a22b081}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\arm\codegen">
-      <UniqueIdentifier>{4c65d436-fac1-4499-b773-26395ee7f885}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\arm">
-      <UniqueIdentifier>{d747427d-0296-4ca7-b257-c39ad7c5f649}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\cs.c">
@@ -82,24 +73,6 @@
     </ClCompile>
     <ClCompile Include="..\..\arch\X86\X86Module.c">
       <Filter>Source Files\x86</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\capstonewin_test\capstone\arch\ARM\ARMBaseInfo.c">
-      <Filter>Source Files\arm</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\capstonewin_test\capstone\arch\ARM\ARMDisassembler.c">
-      <Filter>Source Files\arm</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\capstonewin_test\capstone\arch\ARM\ARMDisassemblerExtension.c">
-      <Filter>Source Files\arm</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\capstonewin_test\capstone\arch\ARM\ARMMapping.c">
-      <Filter>Source Files\arm</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\capstonewin_test\capstone\arch\ARM\ARMInstPrinter.c">
-      <Filter>Source Files\arm</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\capstonewin_test\capstone\arch\ARM\ARMModule.c">
-      <Filter>Source Files\arm</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -229,27 +202,6 @@
     <ClInclude Include="..\..\arch\X86\X86Module.h">
       <Filter>Header Files\x86</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\..\capstonewin_test\capstone\arch\ARM\ARMAddressingModes.h">
-      <Filter>Header Files\arm</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\..\capstonewin_test\capstone\arch\ARM\ARMBaseInfo.h">
-      <Filter>Header Files\arm</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\..\capstonewin_test\capstone\arch\ARM\ARMDisassemblerExtension.h">
-      <Filter>Header Files\arm</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\..\capstonewin_test\capstone\arch\ARM\ARMInstPrinter.h">
-      <Filter>Header Files\arm</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\..\capstonewin_test\capstone\arch\ARM\ARMLinkage.h">
-      <Filter>Header Files\arm</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\..\capstonewin_test\capstone\arch\ARM\ARMMapping.h">
-      <Filter>Header Files\arm</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\..\capstonewin_test\capstone\arch\ARM\ARMModule.h">
-      <Filter>Header Files\arm</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\arch\X86\X86GenAsmWriter.inc">
@@ -320,54 +272,6 @@
     </None>
     <None Include="..\..\arch\X86\X86MappingReg.inc">
       <Filter>Header Files\x86\codegen</Filter>
-    </None>
-    <None Include="..\..\..\..\..\..\capstonewin_test\capstone\arch\ARM\ARMFeatureEnum.inc">
-      <Filter>Header Files\arm\codegen</Filter>
-    </None>
-    <None Include="..\..\..\..\..\..\capstonewin_test\capstone\arch\ARM\ARMGenAsmWriter.inc">
-      <Filter>Header Files\arm\codegen</Filter>
-    </None>
-    <None Include="..\..\..\..\..\..\capstonewin_test\capstone\arch\ARM\ARMGenCSFeatureName.inc">
-      <Filter>Header Files\arm\codegen</Filter>
-    </None>
-    <None Include="..\..\..\..\..\..\capstonewin_test\capstone\arch\ARM\ARMGenCSMappingInsn.inc">
-      <Filter>Header Files\arm\codegen</Filter>
-    </None>
-    <None Include="..\..\..\..\..\..\capstonewin_test\capstone\arch\ARM\ARMGenCSMappingInsnName.inc">
-      <Filter>Header Files\arm\codegen</Filter>
-    </None>
-    <None Include="..\..\..\..\..\..\capstonewin_test\capstone\arch\ARM\ARMGenCSMappingInsnOp.inc">
-      <Filter>Header Files\arm\codegen</Filter>
-    </None>
-    <None Include="..\..\..\..\..\..\capstonewin_test\capstone\arch\ARM\ARMGenCSOpGroup.inc">
-      <Filter>Header Files\arm\codegen</Filter>
-    </None>
-    <None Include="..\..\..\..\..\..\capstonewin_test\capstone\arch\ARM\ARMGenDisassemblerTables.inc">
-      <Filter>Header Files\arm\codegen</Filter>
-    </None>
-    <None Include="..\..\..\..\..\..\capstonewin_test\capstone\arch\ARM\ARMGenInstrInfo.inc">
-      <Filter>Header Files\arm\codegen</Filter>
-    </None>
-    <None Include="..\..\..\..\..\..\capstonewin_test\capstone\arch\ARM\ARMGenRegisterInfo.inc">
-      <Filter>Header Files\arm\codegen</Filter>
-    </None>
-    <None Include="..\..\..\..\..\..\capstonewin_test\capstone\arch\ARM\ARMGenSubtargetInfo.inc">
-      <Filter>Header Files\arm\codegen</Filter>
-    </None>
-    <None Include="..\..\..\..\..\..\capstonewin_test\capstone\arch\ARM\ARMGenSystemRegister.inc">
-      <Filter>Header Files\arm\codegen</Filter>
-    </None>
-    <None Include="..\..\..\..\..\..\capstonewin_test\capstone\arch\ARM\ARMInsnEnum.inc">
-      <Filter>Header Files\arm\codegen</Filter>
-    </None>
-    <None Include="..\..\..\..\..\..\capstonewin_test\capstone\arch\ARM\ARMMappingInsn.inc">
-      <Filter>Header Files\arm\codegen</Filter>
-    </None>
-    <None Include="..\..\..\..\..\..\capstonewin_test\capstone\arch\ARM\ARMMappingInsnName.inc">
-      <Filter>Header Files\arm\codegen</Filter>
-    </None>
-    <None Include="..\..\..\..\..\..\capstonewin_test\capstone\arch\ARM\ARMMappingInsnOp.inc">
-      <Filter>Header Files\arm\codegen</Filter>
     </None>
   </ItemGroup>
 </Project>
